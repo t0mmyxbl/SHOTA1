@@ -1,0 +1,55 @@
+
+Debug Mode
+Student: Thomas Clark	DATE: 06/11/2017	TIME: 11:20:38
+SUMMARY for 26 games played, with 940 moves entered.
+
+Average frames/sec=	63.665
+Average Paint time=	15.694 ms
+Average Init time=	15.417 us
+
+*************************************************************************************************************************
+Release Mode
+Student: Thomas Clark	DATE: 06/11/2017	TIME: 11:21:16
+SUMMARY for 26 games played, with 940 moves entered.
+
+Average frames/sec=	62.523
+Average Paint time=	15.982 ms
+Average Init time=	9.737 us
+
+*************************************************************************************************************************
++ Code Optimisation - Maximum Speed
+Student: Thomas Clark	DATE: 06/11/2017	TIME: 11:23:34
+SUMMARY for 26 games played, with 940 moves entered.
+
+Average frames/sec=	63.801
+Average Paint time=	15.678 ms
+Average Init time=	5.241 us
+
+*************************************************************************************************************************
++ Enhanced Instructions Set - Streaming SIMD Extensions 2
+Student: Thomas Clark	DATE: 06/11/2017	TIME: 11:30:44
+SUMMARY for 26 games played, with 940 moves entered.
+
+Average frames/sec=	69.469
+Average Paint time=	14.371 ms
+Average Init time=	5.307 us
+
+*************************************************************************************************************************
+Moving FrameTime.stopTimer() to before paintGame
+Student: Thomas Clark	DATE: 06/11/2017	TIME: 11:44:13
+SUMMARY for 26 games played, with 940 moves entered.
+
+Average frames/sec=	42177.335
+Average Paint time=	14.342 ms
+Average Init time=	5.110 us
+
+*************************************************************************************************************************
+Running on home computer is much faster
+Student: Thomas Clark	DATE: 21/11/2017	TIME: 23:59:29
+SUMMARY for 26 games played, with 940 moves entered.
+
+Average frames/sec=	167215.595
+Average Paint time=	25.198 ms
+Average Init time=	7.916 us
+
+*************************************************************************************************************************
