@@ -441,9 +441,11 @@ void paintGarden(const char garden[][SIZEX])
 	{
 		for (int x(0); x < (SIZEX); ++x)
 		{
-			cout << garden[y][x];			// display current garden contents
+			printf("%c", garden[y][x]);
+			//char gardenOutput = garden[y][x];			// display current garden contents
+			//putch(gardenOutput);
 		}
-		cout << endl;
+		printf("\n");
 	}
 } //end of paintGarden
 
@@ -610,7 +612,7 @@ void moveFrogs(int snail[], int frogs[][2], string& msg, char garden[][SIZEX], c
 				if (frogs[f][0] == snail[0] && frogs[f][1] == snail[1])	// landed on snail? - grub up!
 				{
 					msg = "FROG GOT YOU!";
-					cout << Bleeeep;									// produce a death knell
+					cout << Bleeeep;								// produce a death knell
 					snailStillAlive = false;							// snail is dead!
 					gameEvent = DEADSNAIL;								//NEW record result
 				}
@@ -798,7 +800,7 @@ void showTitle(int column, int row)
 	SelectBackColour(clBlack);
 	SelectTextColour(clYellow);
 	Gotoxy(column, row);
-	puts("...THE SNAIL TRAIL...");
+	printf("...THE SNAIL TRAIL...");
 	SelectBackColour(clWhite);
 	SelectTextColour(clRed);
 
@@ -810,9 +812,11 @@ void showDateAndTime(int column, int row)
 	SelectBackColour(clWhite);
 	SelectTextColour(clBlack);
 	Gotoxy(column, row);
-	cout << "DATE: " << GetDate();
+	printf("DATE: ");
+	printf(GetDate().c_str());
 	Gotoxy(column, row + 1);
-	cout << "TIME: " << GetTime();
+	printf("TIME: ");
+	printf(GetTime().c_str());
 } //end of showDateAndTime
 
 void showOptions(int column, int row)
@@ -820,23 +824,29 @@ void showOptions(int column, int row)
 	Gotoxy(column, row);
 	SelectBackColour(clWhite);
 	SelectTextColour(clBlack);
-	cout << "Instructions";
+	printf("Instructions");
 	SelectBackColour(clRed);
 	SelectTextColour(clYellow);
 	Gotoxy(column, row += 1);
-	cout << "* TO MOVE USE ARROW KEYS - EAT ALL " << LETTUCE_QUOTA << " LETTUCES";
+	printf("* TO MOVE USE ARROW KEYS - EAT ALL ");
+	printf("%i", LETTUCE_QUOTA);
+	printf(" LETTUCES");
 	Gotoxy(column, row += 1);
-	cout << "  TO WIN.";
+	printf("  TO WIN.");
 	Gotoxy(column, row += 1);
-	cout << "* EAT WORMS (" << WORM << ") AND LETTUCES (" << LETTUCE << ") TO BOOST";
+	printf("* EAT WORMS (");
+	printf("%c", WORM);
+	printf(") AND LETTUCES (");
+	printf("%c", LETTUCE);
+	printf(") TO BOOST");
 	Gotoxy(column, row += 1);
-	cout << "  HEALTH";
+	printf("  HEALTH");
 	Gotoxy(column, row += 1);
-	cout << "* EACH MOVE AND INVISIBLE SLUG PELLETS DEPLETE";
+	printf("* EACH MOVE AND INVISIBLE SLUG PELLETS DEPLETE");
 	Gotoxy(column, row += 1);
-	cout << "  HEALTH.";
+	printf("  HEALTH.");
 	Gotoxy(column, row += 1);
-	cout << "* TO QUIT ANY TIME USE 'Q'";
+	printf("* TO QUIT ANY TIME USE 'Q'");
 } //end of showOptions
 
 void showMessage(string msg, int column, int row)
@@ -845,7 +855,7 @@ void showMessage(string msg, int column, int row)
 	SelectBackColour(clBlack);
 	SelectTextColour(clYellow);
 	Gotoxy(column, row);
-	cout << msg;			//display current message
+	printf(msg.c_str());			//display current message
 } //end of showMessage
 
 
@@ -855,14 +865,17 @@ void showSnailhealth(float health, int column, int row)
 	SelectBackColour(clBlack);
 	SelectTextColour(clYellow);
 	Gotoxy(column, row);
-	cout << fixed << setprecision(2);
 
 	if (health < (LIFE_SPAN / 4.0))   // if health drops below 25% highlight it in RED
 		SelectTextColour(clRed);
 	else SelectTextColour(clYellow);
 
-	if (health < 0.0)  cout << "Health: none!";
-	else cout << "Health: " << health * 100.0 << "%";
+	if (health < 0.0)  printf("Health: none!");
+	else { 
+		printf("Health: ");
+		printf("%2.2f", health * 100.0);
+		printf("%%");
+	}
 
 } //end of showMessage
 
@@ -872,7 +885,7 @@ void showTimingHeadings(int column, int row)
 	SelectBackColour(clBlack);
 	SelectTextColour(clYellow);
 	Gotoxy(column, row);
-	cout << "Game Timings:";
+	printf("Game Timings:");
 } //end of showTimingHeadings
 
 int anotherGo(int column, int row)
@@ -881,7 +894,7 @@ int anotherGo(int column, int row)
 	SelectBackColour(clRed);
 	SelectTextColour(clYellow);
 	Gotoxy(column, row);
-	cout << "PRESS 'Q' AGAIN TO QUIT, OR ANY KEY TO CONTINUE";
+	printf("PRESS 'Q' AGAIN TO QUIT, OR ANY KEY TO CONTINUE");
 	SelectBackColour(clBlack);
 	SelectTextColour(clWhite);
 
@@ -899,11 +912,15 @@ void showTimes(double InitTimeSecs, double FrameTimeSecs, double PaintTimeSecs, 
 	SelectBackColour(clBlack);
 	SelectTextColour(clWhite);
 	Gotoxy(column, row);
-	cout << setprecision(5) << "Initialise game= " << InitTimeSecs * micro << " us";
+	printf("Initialise game= %0.5f", InitTimeSecs * micro);
+	printf(" us");
 	Gotoxy(column, row + 1);
-	cout << setprecision(5) << "Paint Game=      " << PaintTimeSecs * milli << " ms";
+	printf("Paint Game=      %0.5f", PaintTimeSecs * milli);
+	printf(" ms");
 	Gotoxy(column, row + 3);
-	cout << setprecision(3) << "Frames/sec=      " << (double) 1.0 / FrameTimeSecs << " at " << setprecision(5) << FrameTimeSecs * milli << " ms/frame";
+	printf("Frames/sec=      %0.3f", (double) 1.0 / FrameTimeSecs);
+	printf(" at %0.5f", FrameTimeSecs * milli);
+	printf(" ms/frame");
 
 } // end of showTimes
 
