@@ -53,11 +53,21 @@ Average Paint time=	25.198 ms
 Average Init time=	7.916 us
 
 *************************************************************************************************************************
-
-Student: Thomas Clark	DATE: 30/11/2017	TIME: 01:28:37
+Program on laptop with mostly cout
+Student: Thomas Clark	DATE: 01/12/2017	TIME: 00:22:29
 SUMMARY for 26 games played, with 940 moves entered.
 
-Average frames/sec=	116876.658
-Average Paint time=	21.597 ms
-Average Init time=	7.951 us
+Average frames/sec=	52436.161
+Average Paint time=	50.334 ms
+Average Init time=	10.461 us
 
+*************************************************************************************************************************
+Program on laptop with cout changed to mostly printf
+Student: Thomas Clark	DATE: 01/12/2017	TIME: 00:24:52
+SUMMARY for 26 games played, with 940 moves entered.
+
+Average frames/sec=	52718.376
+Average Paint time=	43.250 ms
+Average Init time=	11.941 us
+
+*************************************************************************************************************************
