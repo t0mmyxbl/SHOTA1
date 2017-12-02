@@ -476,28 +476,24 @@ void initialiseFoodSources(char foodSources[][SIZEX])
 //												implement arrow key move
 void analyseKey(string& msg, int key, int move[2])
 { //calculate snail movement required depending on the arrow key pressed
-
-	switch (key)		//...depending on the selected key...
-	{
-	case LEFT:	//prepare to move left
+	if (key == LEFT){
 		move[0] = 0; move[1] = -1;	// decrease the X coordinate
-		break;
-	case RIGHT: //prepare to move right
+	}
+	else if (key == RIGHT){
 		move[0] = 0; move[1] = +1;	// increase the X coordinate
-		break;
-	case UP: //prepare to move up
+	}
+	else if (key == UP) {
 		move[0] = -1; move[1] = 0;	// decrease the Y coordinate
-		break;
-	case DOWN: //prepare to move down
+	}
+	else if (key == DOWN){
 		move[0] = +1; move[1] = 0;	// increase the Y coordinate
-		break;
-	default:  					// this shouldn't happen
+	}
+	else {
 		msg = "INVALID KEY";	// prepare error message
 		move[0] = 0;			// move snail out of the garden
 		move[1] = 0;
 	}
 }
-
 
 //**************************************************************************
 //			scatter some stuff around the garden (slug pellets, lettuces, and worms)
@@ -854,14 +850,16 @@ void moveFrogs(int snail[], int frogs[][2], string& msg, char garden[][SIZEX], c
 bool eatenByEagle(char garden[][SIZEX], int frog[])
 { //There's a 1 in 'EagleStrike' chance of being eaten
 
-	if (Random(int(EagleStrike * 100.0)) == int(EagleStrike * 100.0))
+	if (!(Random(int(EagleStrike * 100.0)) == int(EagleStrike * 100.0)))
 	{
+		return false;
+	}
+	else {
 		garden[frog[0]][frog[1]] = DEAD_FROG_BONES;				// show remnants of frog in garden
 		frog[0] = DEAD_FROG_BONES;								// and mark frog as deceased
 		gameEvent = DEAD_FROG_BONES;							//NEW record result
 		return true;
 	}
-	else return false;
 }
 
 // end of moveFrogs
@@ -877,7 +875,97 @@ void moveSnail(char foodSources[][SIZEX], int snail[], int keyMove[], string& ms
 	// ...depending on what's on the intended next position in garden.
 
 	lifeLeft -= ENERGY_USED;			// just moving costs energy, so deplete it. Assumes the move is made!
-	if (lifeLeft < 0.0)					// check if snail has run out of energy
+	if (lifeLeft > 0.0)					// check if snail has run out of energy
+	{
+		int targetY(snail[0] + keyMove[0]);
+		int targetX(snail[1] + keyMove[1]);
+
+		if ((garden[targetY][targetX] == GRASS) || (garden[targetY][targetX] == DEAD_FROG_BONES))
+		{
+			garden[snail[0]][snail[1]] = SLIME;				// lay a trail of slime
+			slimeTrail[snail[0]][snail[1]] = SLIMELIFE;		// set slime life span
+			snail[0] += keyMove[0];							// go in direction indicated by keyMove
+			snail[1] += keyMove[1];
+			moveResult = GRASS;								//NEW record result of move
+		}
+		else if (garden[targetY][targetX] == WALL)
+		{
+			cout << Bleep;				// produce a warning sound
+			msg = "THAT'S A WALL!";
+			lifeLeft += ENERGY_USED;	// didn't move, so return some health!
+			moveResult = WALL;			//NEW record result of move
+		}
+		else if (garden[targetY][targetX] == LETTUCE)
+		{
+			garden[snail[0]][snail[1]] = SLIME;				//lay a trail of slime
+			slimeTrail[snail[0]][snail[1]] = SLIMELIFE;		//set slime LIFE_SPAN
+			snail[0] += keyMove[0];							//go in direction indicated by keyMove
+			snail[1] += keyMove[1];
+			foodSources[snail[0]][snail[1]] = GRASS;		// eat the lettuce, repace with grass
+			lettucesEaten++;								// keep a count
+
+			lifeLeft += LETTUCE_ENERGY;						// add energy to snail's LIFE_SPAN!
+			if (lifeLeft > LIFE_SPAN) lifeLeft = LIFE_SPAN;	// can't acquire more than 100% energy
+
+			fullOfLettuce = (lettucesEaten == LETTUCE_QUOTA); // if full, stop the game as snail wins!
+			fullOfLettuce ? msg = "LAST LETTUCE EATEN" : msg = "LETTUCE EATEN";
+			fullOfLettuce ? cout << Bleeeep : cout << Bleep;
+			// WIN! WIN! WIN!
+			if (fullOfLettuce) gameEvent = WIN;				//NEW record result
+			moveResult = LETTUCE;							//NEW record result of move
+		}
+		else if (garden[targetY][targetX] == PELLET)
+		{
+			garden[snail[0]][snail[1]] = SLIME;				// lay a trail of slime
+			slimeTrail[snail[0]][snail[1]] = SLIMELIFE;		// set slime LIFE_SPAN
+			snail[0] += keyMove[0];							// go in direction indicated by keyMove
+			snail[1] += keyMove[1];
+			msg = "PELLET ALERT!";
+			cout << Bleep;									// produce a warning sound
+
+			lifeLeft *= (LIFE_SPAN - PELLET_POISON);		// lose a bit of health
+			moveResult = PELLET;							//NEW record result of move
+		}
+		else if (garden[targetY][targetX] == WORM)
+		{
+			garden[snail[0]][snail[1]] = SLIME;				// lay a trail of slime
+			slimeTrail[snail[0]][snail[1]] = SLIMELIFE;		// set slime LIFE_SPAN
+			snail[0] += keyMove[0];							// go in direction indicated by keyMove
+			snail[1] += keyMove[1];
+			foodSources[snail[0]][snail[1]] = GRASS;		// eat the worm, only grass left behind
+			msg = "WORM EATEN";
+			cout << Bleep;
+
+			if (lifeLeft > (LIFE_SPAN - WORM_ENERGY)) lifeLeft = LIFE_SPAN;	// can't have more than 100% life span!
+			else lifeLeft += WORM_ENERGY;
+			moveResult = WORM;								//NEW record result of move
+		}
+		else if (garden[targetY][targetX] == FROG)
+		{
+			garden[snail[0]][snail[1]] = SLIME;				// lay a final trail of slime
+			snail[0] += keyMove[0];							// go in direction indicated by keyMove
+			snail[1] += keyMove[1];
+			msg = "OH NO! A FROG!";
+			cout << Bleeeep;								// produce a death knell
+			snailStillAlive = false;						// game over
+			moveResult = FROG;								//NEW record result of move
+			gameEvent = DEADSNAIL;							//NEW record result of move
+		}
+		else if (garden[targetY][targetX] == SLIME)
+		{
+			cout << Bleep;		// produce a warning sound
+			msg = "THAT'S SLIME!";
+			lifeLeft += ENERGY_USED; // didn't move, so return some health!
+			moveResult = SLIME;								//NEW record result of move
+		}
+		else
+		{
+				msg = "NOT MOVED!";
+				lifeLeft += ENERGY_USED; // didn't move, so return some health!
+				moveResult = STUCK;								//NEW record result of move
+		}
+	}
+	else
 	{
 		msg = "EXHAUSTED! TIME TO DIE...";
 		cout << Bleeeep;
@@ -886,96 +974,7 @@ void moveSnail(char foodSources[][SIZEX], int snail[], int keyMove[], string& ms
 		return;
 	}
 
-	int targetY(snail[0] + keyMove[0]);
-	int targetX(snail[1] + keyMove[1]);
-	switch (garden[targetY][targetX]) //depending on what is at target position
-	{
 
-	case LETTUCE:		// increment lettuce count and win if snail is full
-		garden[snail[0]][snail[1]] = SLIME;				//lay a trail of slime
-		slimeTrail[snail[0]][snail[1]] = SLIMELIFE;		//set slime LIFE_SPAN
-		snail[0] += keyMove[0];							//go in direction indicated by keyMove
-		snail[1] += keyMove[1];
-		foodSources[snail[0]][snail[1]] = GRASS;		// eat the lettuce, repace with grass
-		lettucesEaten++;								// keep a count
-
-		lifeLeft += LETTUCE_ENERGY;						// add energy to snail's LIFE_SPAN!
-		if (lifeLeft > LIFE_SPAN) lifeLeft = LIFE_SPAN;	// can't acquire more than 100% energy
-
-		fullOfLettuce = (lettucesEaten == LETTUCE_QUOTA); // if full, stop the game as snail wins!
-		fullOfLettuce ? msg = "LAST LETTUCE EATEN" : msg = "LETTUCE EATEN";
-		fullOfLettuce ? cout << Bleeeep : cout << Bleep;
-		// WIN! WIN! WIN!
-		if (fullOfLettuce) gameEvent = WIN;				//NEW record result
-		moveResult = LETTUCE;							//NEW record result of move
-		break;
-
-	case WORM:			// if snail eats a worm, life extends... 
-		garden[snail[0]][snail[1]] = SLIME;				// lay a trail of slime
-		slimeTrail[snail[0]][snail[1]] = SLIMELIFE;		// set slime LIFE_SPAN
-		snail[0] += keyMove[0];							// go in direction indicated by keyMove
-		snail[1] += keyMove[1];
-		foodSources[snail[0]][snail[1]] = GRASS;		// eat the worm, only grass left behind
-		msg = "WORM EATEN";
-		cout << Bleep;
-
-		if (lifeLeft > (LIFE_SPAN - WORM_ENERGY)) lifeLeft = LIFE_SPAN;	// can't have more than 100% life span!
-		else lifeLeft += WORM_ENERGY;
-		moveResult = WORM;								//NEW record result of move
-		break;
-
-	case PELLET:		// warn that a pellet has been slithered over and poisoned the snail a bit
-		garden[snail[0]][snail[1]] = SLIME;				// lay a trail of slime
-		slimeTrail[snail[0]][snail[1]] = SLIMELIFE;		// set slime LIFE_SPAN
-		snail[0] += keyMove[0];							// go in direction indicated by keyMove
-		snail[1] += keyMove[1];
-		msg = "PELLET ALERT!";
-		cout << Bleep;									// produce a warning sound
-
-		lifeLeft *= (LIFE_SPAN - PELLET_POISON);		// lose a bit of health
-		moveResult = PELLET;							//NEW record result of move
-		break;
-
-	case FROG:			//	kill snail if it throws itself at a frog!
-		garden[snail[0]][snail[1]] = SLIME;				// lay a final trail of slime
-		snail[0] += keyMove[0];							// go in direction indicated by keyMove
-		snail[1] += keyMove[1];
-		msg = "OH NO! A FROG!";
-		cout << Bleeeep;								// produce a death knell
-		snailStillAlive = false;						// game over
-		moveResult = FROG;								//NEW record result of move
-		gameEvent = DEADSNAIL;							//NEW record result of move
-		break;
-
-	case WALL:			// Oops, bumped into garden wall
-		cout << Bleep;				// produce a warning sound
-		msg = "THAT'S A WALL!";
-		lifeLeft += ENERGY_USED;	// didn't move, so return some health!
-		moveResult = WALL;			//NEW record result of move
-		break;
-
-	case GRASS:
-	case DEAD_FROG_BONES:	// it's safe to move over dead/missing frogs too
-		garden[snail[0]][snail[1]] = SLIME;				// lay a trail of slime
-		slimeTrail[snail[0]][snail[1]] = SLIMELIFE;		// set slime life span
-		snail[0] += keyMove[0];							// go in direction indicated by keyMove
-		snail[1] += keyMove[1];
-		moveResult = GRASS;								//NEW record result of move
-		break;
-
-	case SLIME:				// Been here before, snail doesn't cross his own slime!
-		cout << Bleep;		// produce a warning sound
-		msg = "THAT'S SLIME!";
-		lifeLeft += ENERGY_USED; // didn't move, so return some health!
-		moveResult = SLIME;								//NEW record result of move
-		break;
-
-	default:
-		msg = "NOT MOVED!";
-		lifeLeft += ENERGY_USED; // didn't move, so return some health!
-		moveResult = STUCK;								//NEW record result of move
-
-	}
 } //end of MoveSnail
 
 
@@ -1091,19 +1090,20 @@ void showSnailhealth(float health, int column, int row)
 	SelectTextColour(clYellow);
 	Gotoxy(column, row);
 
-	if (health < (LIFE_SPAN / 4.0))   // if health drops below 25% highlight it in RED
+	if (health > (LIFE_SPAN / 4.0))   // if health drops below 25% highlight it in RED
+		SelectTextColour(clYellow);	
+	else 
 		SelectTextColour(clRed);
-	else SelectTextColour(clYellow);
 
-	if (health < 0.0)  printf("Health: none!");
-	else { 
+	if (health > 0.0) {
 		printf("Health: ");
 		printf("%2.2f", health * 100.0);
 		printf("%%");
 	}
-
+	else { 
+		printf("Health: none!");
+	}
 } //end of showMessage
-
 
 void showTimingHeadings(int column, int row)
 {

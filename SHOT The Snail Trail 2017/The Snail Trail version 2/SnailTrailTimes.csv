@@ -98,3 +98,21 @@ Average Paint time=	44.039 ms
 Average Init time=	14.567 us
 
 *************************************************************************************************************************
+altered ifs and changed switch statements for better branch prediction test #1
+Student: Thomas Clark	DATE: 02/12/2017	TIME: 16:07:55
+SUMMARY for 26 games played, with 940 moves entered.
+
+Average frames/sec=	69664.929
+Average Paint time=	43.949 ms
+Average Init time=	13.718 us
+
+*************************************************************************************************************************
+altered ifs and changed switch statements for better branch prediction test #2
+Student: Thomas Clark	DATE: 02/12/2017	TIME: 16:09:48
+SUMMARY for 26 games played, with 940 moves entered.
+
+Average frames/sec=	77202.225
+Average Paint time=	44.157 ms
+Average Init time=	16.067 us
+
+*************************************************************************************************************************
