@@ -507,208 +507,28 @@ void scatterStuff(char garden[][SIZEX], char foodSources[][SIZEX], int snail[])
 	// ensure stuff doesn't land on the snail, or each other.
 	// prime x,y coords with initial random numbers before checking
 
-//=================SET PELLET POSITIONS==========================
+	for (int slugP = 0; slugP < NUM_PELLETS; slugP++)				// scatter some slug pellets...
+	{
 		int x(Random(SIZEX - 2)), y(Random(SIZEY - 2));				// seed x and y with random coords
 		while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET);	// avoid snail and other pellets
 
-		garden[y][x] = PELLET;	// hide pellets around the garden
-
-		x = (Random(SIZEX - 2));
-		y = (Random(SIZEY - 2));				// seed x and y with random coords
-		while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET);	// avoid snail and other pellets
-
-		garden[y][x] = PELLET;	// hide pellets around the garden
-
-		x = (Random(SIZEX - 2));
-		y = (Random(SIZEY - 2));				// seed x and y with random coords
-		while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET);	// avoid snail and other pellets
-
-		garden[y][x] = PELLET;	// hide pellets around the garden
-
-		x = (Random(SIZEX - 2));
-		y = (Random(SIZEY - 2));				// seed x and y with random coords
-		while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET);	// avoid snail and other pellets
-
-		garden[y][x] = PELLET;	// hide pellets around the garden
-
-		x = (Random(SIZEX - 2));
-		y = (Random(SIZEY - 2));				// seed x and y with random coords
-		while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET);	// avoid snail and other pellets
-
-		garden[y][x] = PELLET;	// hide pellets around the garden
-
-		x = (Random(SIZEX - 2));
-		y = (Random(SIZEY - 2));				// seed x and y with random coords
-		while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET);	// avoid snail and other pellets
-
-		garden[y][x] = PELLET;	// hide pellets around the garden
-
-		x = (Random(SIZEX - 2));
-		y = (Random(SIZEY - 2));				// seed x and y with random coords
-		while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET);	// avoid snail and other pellets
-
-		garden[y][x] = PELLET;	// hide pellets around the garden
-
-		x = (Random(SIZEX - 2));
-		y = (Random(SIZEY - 2));				// seed x and y with random coords
-		while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET);	// avoid snail and other pellets
-
-		garden[y][x] = PELLET;	// hide pellets around the garden
-
-		x = (Random(SIZEX - 2));
-		y = (Random(SIZEY - 2));				// seed x and y with random coords
-		while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET);	// avoid snail and other pellets
-
-		garden[y][x] = PELLET;	// hide pellets around the garden
-
-		x = (Random(SIZEX - 2));
-		y = (Random(SIZEY - 2));				// seed x and y with random coords
-		while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET);	// avoid snail and other pellets
-
-		garden[y][x] = PELLET;	// hide pellets around the garden
-
-		x = (Random(SIZEX - 2));
-		y = (Random(SIZEY - 2));				// seed x and y with random coords
-		while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET);	// avoid snail and other pellets
-
-		garden[y][x] = PELLET;	// hide pellets around the garden
-
-		x = (Random(SIZEX - 2));
-		y = (Random(SIZEY - 2));				// seed x and y with random coords
-		while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET);	// avoid snail and other pellets
-
-		garden[y][x] = PELLET;	// hide pellets around the garden
-
-		x = (Random(SIZEX - 2));
-		y = (Random(SIZEY - 2));				// seed x and y with random coords
-		while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET);	// avoid snail and other pellets
-
-		garden[y][x] = PELLET;	// hide pellets around the garden
-
-		x = (Random(SIZEX - 2));
-		y = (Random(SIZEY - 2));				// seed x and y with random coords
-		while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET);	// avoid snail and other pellets
-
-		garden[y][x] = PELLET;	// hide pellets around the garden
-
-		x = (Random(SIZEX - 2));
-		y = (Random(SIZEY - 2));				// seed x and y with random coords
-		while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET);	// avoid snail and other pellets
-
-		garden[y][x] = PELLET;	// hide pellets around the garden
-
-		x = (Random(SIZEX - 2));
-		y = (Random(SIZEY - 2));				// seed x and y with random coords
-		while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET);	// avoid snail and other pellets
-
-		garden[y][x] = PELLET;	// hide pellets around the garden
-
-
-//===============================================================
-
-//=================SET LETTUCE POSITIONS=========================
-
-	x = (Random(SIZEX - 2));
-	y = (Random(SIZEY - 2));				// seed x and y with random coords
-	while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET || foodSources[y][x] == LETTUCE);	// avoid existing snail, pellets and other lettucii
-
-	foodSources[y][x] = LETTUCE;								// plant a lettuce in the foodSources array
-
-	x = (Random(SIZEX - 2));
-	y = (Random(SIZEY - 2));				// seed x and y with random coords
-	while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET || foodSources[y][x] == LETTUCE);	// avoid existing snail, pellets and other lettucii
-
-	foodSources[y][x] = LETTUCE;								// plant a lettuce in the foodSources array
-
-	x = (Random(SIZEX - 2));
-	y = (Random(SIZEY - 2));				// seed x and y with random coords				// seed x and y with random coords
-	while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET || foodSources[y][x] == LETTUCE);	// avoid existing snail, pellets and other lettucii
-
-	foodSources[y][x] = LETTUCE;								// plant a lettuce in the foodSources array
-
-	x = (Random(SIZEX - 2));
-	y = (Random(SIZEY - 2));				// seed x and y with random coords			// seed x and y with random coords
-	while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET || foodSources[y][x] == LETTUCE);	// avoid existing snail, pellets and other lettucii
-
-	foodSources[y][x] = LETTUCE;								// plant a lettuce in the foodSources array
-
-	x = (Random(SIZEX - 2));
-	y = (Random(SIZEY - 2));				// seed x and y with random coords			// seed x and y with random coords
-	while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET || foodSources[y][x] == LETTUCE);	// avoid existing snail, pellets and other lettucii
-
-	foodSources[y][x] = LETTUCE;								// plant a lettuce in the foodSources array
-
-	x = (Random(SIZEX - 2));
-	y = (Random(SIZEY - 2));				// seed x and y with random coords			// seed x and y with random coords
-	while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET || foodSources[y][x] == LETTUCE);	// avoid existing snail, pellets and other lettucii
-
-	foodSources[y][x] = LETTUCE;								// plant a lettuce in the foodSources array
-
-	x = (Random(SIZEX - 2));
-	y = (Random(SIZEY - 2));				// seed x and y with random coords			// seed x and y with random coords
-	while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET || foodSources[y][x] == LETTUCE);	// avoid existing snail, pellets and other lettucii
-
-	foodSources[y][x] = LETTUCE;								// plant a lettuce in the foodSources array
-
-//==========================================================================
-
-//==================PLACE WORMS=============================================
-	
-	x = (Random(SIZEX - 2));
-	y = (Random(SIZEY - 2));				// seed x and y with random coords
-	while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET || foodSources[y][x] == LETTUCE || garden[y][x] == WORM);	// avoid existing snail, pellets,lettuces and worms!
-
-	foodSources[y][x] = WORM;									// place a worm in the foodSources array
-
-	x = (Random(SIZEX - 2));
-	y = (Random(SIZEY - 2));				// seed x and y with random coords
-	while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET || foodSources[y][x] == LETTUCE || garden[y][x] == WORM);	// avoid existing snail, pellets,lettuces and worms!
-
-	foodSources[y][x] = WORM;									// place a worm in the foodSources array
-
-	x = (Random(SIZEX - 2));
-	y = (Random(SIZEY - 2));				// seed x and y with random coords
-	while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET || foodSources[y][x] == LETTUCE || garden[y][x] == WORM);	// avoid existing snail, pellets,lettuces and worms!
-
-	foodSources[y][x] = WORM;
-
-	x = (Random(SIZEX - 2));
-	y = (Random(SIZEY - 2));				// seed x and y with random coords
-	while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET || foodSources[y][x] == LETTUCE || garden[y][x] == WORM);	// avoid existing snail, pellets,lettuces and worms!
-
-	foodSources[y][x] = WORM;
-
-	x = (Random(SIZEX - 2));
-	y = (Random(SIZEY - 2));				// seed x and y with random coords
-	while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET || foodSources[y][x] == LETTUCE || garden[y][x] == WORM);	// avoid existing snail, pellets,lettuces and worms!
-
-	foodSources[y][x] = WORM;
-
-	x = (Random(SIZEX - 2));
-	y = (Random(SIZEY - 2));				// seed x and y with random coords
-	while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET || foodSources[y][x] == LETTUCE || garden[y][x] == WORM);	// avoid existing snail, pellets,lettuces and worms!
-
-	foodSources[y][x] = WORM;
-
-	x = (Random(SIZEX - 2));
-	y = (Random(SIZEY - 2));				// seed x and y with random coords
-	while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET || foodSources[y][x] == LETTUCE || garden[y][x] == WORM);	// avoid existing snail, pellets,lettuces and worms!
-
-	foodSources[y][x] = WORM;
-
-	x = (Random(SIZEX - 2));
-	y = (Random(SIZEY - 2));				// seed x and y with random coords
-	while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET || foodSources[y][x] == LETTUCE || garden[y][x] == WORM);	// avoid existing snail, pellets,lettuces and worms!
-
-	foodSources[y][x] = WORM;
-
-	x = (Random(SIZEX - 2));
-	y = (Random(SIZEY - 2));				// seed x and y with random coords
-	while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET || foodSources[y][x] == LETTUCE || garden[y][x] == WORM);	// avoid existing snail, pellets,lettuces and worms!
-
-	foodSources[y][x] = WORM;
-
-//==========================================================================
+		garden[y][x] = PELLET;										// hide pellets around the garden
+	}
+
+	for (int food = 0; food < LETTUCE_QUOTA; food++)				// scatter lettuces for eating...
+	{
+		int x(Random(SIZEX - 2)), y(Random(SIZEY - 2));				// seed x and y with random coords
+		while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET || foodSources[y][x] == LETTUCE);	// avoid existing snail, pellets and other lettucii
+
+		foodSources[y][x] = LETTUCE;								// plant a lettuce in the foodSources array
+	}
+	for (int food = 0; food < WORM_COUNT; food++)					// scatter worms...
+	{
+		int x(Random(SIZEX - 2)), y(Random(SIZEY - 2));				// seed x and y with random coords
+		while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == PELLET || foodSources[y][x] == LETTUCE || garden[y][x] == WORM);	// avoid existing snail, pellets,lettuces and worms!
+
+		foodSources[y][x] = WORM;									// place a worm in the foodSources array
+	}
 }
 
 
@@ -720,29 +540,15 @@ void scatterFrogs(char garden[][SIZEX], int snail[], int frogs[][2])
 	// need to avoid the snail initially (seems a bit unfair otherwise!). Frogs aren't affected by
 	// slug pellets, btw, and will absorb them, and they may land on lettuces or worms without damage.
 
+	for (int f = 0; f < NUM_FROGS; f++)					// for each frog passing by ...
+	{
 		int x(Random(SIZEX - 2)), y(Random(SIZEY - 2));	// prime coords before checking
 		while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == FROG);		// avoid snail and existing frogs
 
-		frogs[0][0] = y;								// store initial positions of frog
-		frogs[0][1] = x;
-		garden[frogs[0][0]][frogs[0][1]] = FROG;		// put frogs on garden (this may overwrite a slug pellet)
-
-		x = (Random(SIZEX - 2));
-		y = (Random(SIZEY - 2));	// prime coords before checking
-		while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == FROG);		// avoid snail and existing frogs
-
-		frogs[1][0] = y;								// store initial positions of frog
-		frogs[1][1] = x;
-		garden[frogs[1][0]][frogs[1][1]] = FROG;		// put frogs on garden (this may overwrite a slug pellet)
-
-		x = (Random(SIZEX - 2));
-		y = (Random(SIZEY - 2));	// prime coords before checking
-		while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == FROG);		// avoid snail and existing frogs
-
-		frogs[2][0] = y;								// store initial positions of frog
-		frogs[2][1] = x;
-		garden[frogs[2][0]][frogs[2][1]] = FROG;		// put frogs on garden (this may overwrite a slug pellet)
-
+		frogs[f][0] = y;								// store initial positions of frog
+		frogs[f][1] = x;
+		garden[frogs[f][0]][frogs[f][1]] = FROG;		// put frogs on garden (this may overwrite a slug pellet)
+	}
 }
 
 
@@ -760,180 +566,64 @@ void moveFrogs(int snail[], int frogs[][2], string& msg, char garden[][SIZEX], c
 
 	bool eatenByEagle(char[][SIZEX], int[]);
 
-//======================FROG 1===========================
-
-		if ((frogs[0][0] != DEAD_FROG_BONES) && snailStillAlive)		// if frog not been gotten by an eagle or GameOver
+	for (int f = 0; f<NUM_FROGS; f++)
+	{
+		if ((frogs[f][0] != DEAD_FROG_BONES) && snailStillAlive)		// if frog not been gotten by an eagle or GameOver
 		{
 			// jump off garden (taking any slug pellet with it)... check it wasn't on a lettuce or worm though...
 
-			if (lettuces[frogs[0][0]][frogs[0][1]] == LETTUCE)
-				garden[frogs[0][0]][frogs[0][1]] = LETTUCE;
-			else  if (lettuces[frogs[0][0]][frogs[0][1]] == WORM)
-				garden[frogs[0][0]][frogs[0][1]] = WORM;
-			else garden[frogs[0][0]][frogs[0][1]] = GRASS;
+			if (lettuces[frogs[f][0]][frogs[f][1]] == LETTUCE)
+				garden[frogs[f][0]][frogs[f][1]] = LETTUCE;
+			else  if (lettuces[frogs[f][0]][frogs[f][1]] == WORM)
+				garden[frogs[f][0]][frogs[f][1]] = WORM;
+			else garden[frogs[f][0]][frogs[f][1]] = GRASS;
 
 			// Work out where to jump to depending on where the snail is...
 
 			// see which way to jump in the Y direction (up and down)
 
-			if (snail[0] - frogs[0][0] > 0)
+			if (snail[0] - frogs[f][0] > 0)
 			{
-				frogs[0][0] += FROGLEAP;
-				if (frogs[0][0] >= SIZEY - 1) frogs[0][0] = SIZEY - 2;  // don't go over the garden walls!
+				frogs[f][0] += FROGLEAP;
+				if (frogs[f][0] >= SIZEY - 1) frogs[f][0] = SIZEY - 2;  // don't go over the garden walls!
 
 			}
-			else if (snail[0] - frogs[0][0] < 0)
+			else if (snail[0] - frogs[f][0] < 0)
 			{
-				frogs[0][0] -= FROGLEAP;
-				if (frogs[0][0] < 1) frogs[0][0] = 1;					// don't go over the garden walls!
+				frogs[f][0] -= FROGLEAP;
+				if (frogs[f][0] < 1) frogs[f][0] = 1;					// don't go over the garden walls!
 			};
 
 			// see which way to jump in the X direction (left and right)
 
-			if (snail[1] - frogs[0][1] > 0)
+			if (snail[1] - frogs[f][1] > 0)
 			{
-				frogs[0][1] += FROGLEAP;
-				if (frogs[0][1] >= SIZEX - 1) frogs[0][1] = SIZEX - 2;
+				frogs[f][1] += FROGLEAP;
+				if (frogs[f][1] >= SIZEX - 1) frogs[f][1] = SIZEX - 2;
 			}
-			else if (snail[1] - frogs[0][1] < 0)
+			else if (snail[1] - frogs[f][1] < 0)
 			{
-				frogs[0][1] -= FROGLEAP;
-				if (frogs[0][1] < 1)	frogs[0][1] = 1;
+				frogs[f][1] -= FROGLEAP;
+				if (frogs[f][1] < 1)	frogs[f][1] = 1;
 			};
 
-			if (!eatenByEagle(garden, frogs[0]))						// not gotten by eagle?
+			if (!eatenByEagle(garden, frogs[f]))						// not gotten by eagle?
 			{
-				if (frogs[0][0] == snail[0] && frogs[0][1] == snail[1])	// landed on snail? - grub up!
+				if (frogs[f][0] == snail[0] && frogs[f][1] == snail[1])	// landed on snail? - grub up!
 				{
 					msg = "FROG GOT YOU!";
 					cout << Bleeeep;								// produce a death knell
 					snailStillAlive = false;							// snail is dead!
 					gameEvent = DEADSNAIL;								//NEW record result
 				}
-				else garden[frogs[0][0]][frogs[0][1]] = FROG;			// display frog on garden (thus destroying any pellet that might be there).
+				else garden[frogs[f][0]][frogs[f][1]] = FROG;			// display frog on garden (thus destroying any pellet that might be there).
 			}
 			else {
 				msg = "EAGLE GOT A FROG";
 				cout << Bleep;											//produce a warning sound
 			}
 		}
-//====================================================
-
-//====================FROG 2==========================
-		if ((frogs[1][0] != DEAD_FROG_BONES) && snailStillAlive)		// if frog not been gotten by an eagle or GameOver
-		{
-			// jump off garden (taking any slug pellet with it)... check it wasn't on a lettuce or worm though...
-
-			if (lettuces[frogs[1][0]][frogs[1][1]] == LETTUCE)
-				garden[frogs[1][0]][frogs[1][1]] = LETTUCE;
-			else  if (lettuces[frogs[1][0]][frogs[1][1]] == WORM)
-				garden[frogs[1][0]][frogs[1][1]] = WORM;
-			else garden[frogs[1][0]][frogs[1][1]] = GRASS;
-
-			// Work out where to jump to depending on where the snail is...
-
-			// see which way to jump in the Y direction (up and down)
-
-			if (snail[0] - frogs[1][0] > 0)
-			{
-				frogs[1][0] += FROGLEAP;
-				if (frogs[1][0] >= SIZEY - 1) frogs[1][0] = SIZEY - 2;  // don't go over the garden walls!
-
-			}
-			else if (snail[0] - frogs[1][0] < 0)
-			{
-				frogs[1][0] -= FROGLEAP;
-				if (frogs[1][0] < 1) frogs[1][0] = 1;					// don't go over the garden walls!
-			};
-
-			// see which way to jump in the X direction (left and right)
-
-			if (snail[1] - frogs[1][1] > 0)
-			{
-				frogs[1][1] += FROGLEAP;
-				if (frogs[1][1] >= SIZEX - 1) frogs[1][1] = SIZEX - 2;
-			}
-			else if (snail[1] - frogs[1][1] < 0)
-			{
-				frogs[1][1] -= FROGLEAP;
-				if (frogs[1][1] < 1)	frogs[1][1] = 1;
-			};
-
-			if (!eatenByEagle(garden, frogs[1]))						// not gotten by eagle?
-			{
-				if (frogs[1][0] == snail[0] && frogs[1][1] == snail[1])	// landed on snail? - grub up!
-				{
-					msg = "FROG GOT YOU!";
-					cout << Bleeeep;								// produce a death knell
-					snailStillAlive = false;							// snail is dead!
-					gameEvent = DEADSNAIL;								//NEW record result
-				}
-				else garden[frogs[1][0]][frogs[1][1]] = FROG;			// display frog on garden (thus destroying any pellet that might be there).
-			}
-			else {
-				msg = "EAGLE GOT A FROG";
-				cout << Bleep;											//produce a warning sound
-			}
-		}
-//=================================================
-
-//===================FROG 3========================
-		if ((frogs[2][0] != DEAD_FROG_BONES) && snailStillAlive)		// if frog not been gotten by an eagle or GameOver
-		{
-			// jump off garden (taking any slug pellet with it)... check it wasn't on a lettuce or worm though...
-
-			if (lettuces[frogs[2][0]][frogs[2][1]] == LETTUCE)
-				garden[frogs[2][0]][frogs[2][1]] = LETTUCE;
-			else  if (lettuces[frogs[2][0]][frogs[2][1]] == WORM)
-				garden[frogs[2][0]][frogs[2][1]] = WORM;
-			else garden[frogs[2][0]][frogs[2][1]] = GRASS;
-
-			// Work out where to jump to depending on where the snail is...
-
-			// see which way to jump in the Y direction (up and down)
-
-			if (snail[0] - frogs[2][0] > 0)
-			{
-				frogs[2][0] += FROGLEAP;
-				if (frogs[2][0] >= SIZEY - 1) frogs[2][0] = SIZEY - 2;  // don't go over the garden walls!
-
-			}
-			else if (snail[0] - frogs[2][0] < 0)
-			{
-				frogs[2][0] -= FROGLEAP;
-				if (frogs[2][0] < 1) frogs[2][0] = 1;					// don't go over the garden walls!
-			};
-
-			// see which way to jump in the X direction (left and right)
-
-			if (snail[2] - frogs[2][1] > 0)
-			{
-				frogs[2][1] += FROGLEAP;
-				if (frogs[2][1] >= SIZEX - 1) frogs[2][1] = SIZEX - 2;
-			}
-			else if (snail[1] - frogs[2][1] < 0)
-			{
-				frogs[2][1] -= FROGLEAP;
-				if (frogs[2][1] < 1)	frogs[2][1] = 1;
-			};
-
-			if (!eatenByEagle(garden, frogs[2]))						// not gotten by eagle?
-			{
-				if (frogs[2][0] == snail[0] && frogs[2][1] == snail[1])	// landed on snail? - grub up!
-				{
-					msg = "FROG GOT YOU!";
-					cout << Bleeeep;								// produce a death knell
-					snailStillAlive = false;							// snail is dead!
-					gameEvent = DEADSNAIL;								//NEW record result
-				}
-				else garden[frogs[2][0]][frogs[2][1]] = FROG;			// display frog on garden (thus destroying any pellet that might be there).
-			}
-			else {
-				msg = "EAGLE GOT A FROG";
-				cout << Bleep;											//produce a warning sound
-			}
-		}
-//======================================================
+	}// end of FOR loop
 }
 
 bool eatenByEagle(char garden[][SIZEX], int frog[])
