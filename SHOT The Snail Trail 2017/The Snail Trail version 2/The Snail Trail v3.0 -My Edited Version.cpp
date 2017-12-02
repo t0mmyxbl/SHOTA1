@@ -716,14 +716,6 @@ void scatterFrogs(char garden[][SIZEX], int snail[], int frogs[][2])
 		frogs[1][1] = x;
 		garden[frogs[1][0]][frogs[1][1]] = FROG;		// put frogs on garden (this may overwrite a slug pellet) #2
 
-		//x = (Random(SIZEX - 2));
-		//y = (Random(SIZEY - 2));	// prime coords before checking
-		//while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == FROG);		// avoid snail and existing frogs
-
-		//frogs[2][0] = y;								// store initial positions of frog
-		//frogs[2][1] = x;
-		//garden[frogs[2][0]][frogs[2][1]] = FROG;		// put frogs on garden (this may overwrite a slug pellet) #3
-
 }
 
 
@@ -857,64 +849,6 @@ void moveFrogs(int snail[], int frogs[][2], string& msg, char garden[][SIZEX], c
 			}
 		}
 //=================================================
-
-//===================FROG 3========================
-		//if ((frogs[2][0] != DEAD_FROG_BONES) && snailStillAlive)		// if frog not been gotten by an eagle or GameOver
-		//{
-		//	// jump off garden (taking any slug pellet with it)... check it wasn't on a lettuce or worm though...
-
-		//	if (lettuces[frogs[2][0]][frogs[2][1]] == LETTUCE)
-		//		garden[frogs[2][0]][frogs[2][1]] = LETTUCE;
-		//	else  if (lettuces[frogs[2][0]][frogs[2][1]] == WORM)
-		//		garden[frogs[2][0]][frogs[2][1]] = WORM;
-		//	else garden[frogs[2][0]][frogs[2][1]] = GRASS;
-
-		//	// Work out where to jump to depending on where the snail is...
-
-		//	// see which way to jump in the Y direction (up and down)
-
-		//	if (snail[0] - frogs[2][0] > 0)
-		//	{
-		//		frogs[2][0] += FROGLEAP;
-		//		if (frogs[2][0] >= SIZEY - 1) frogs[2][0] = SIZEY - 2;  // don't go over the garden walls!
-
-		//	}
-		//	else if (snail[0] - frogs[2][0] < 0)
-		//	{
-		//		frogs[2][0] -= FROGLEAP;
-		//		if (frogs[2][0] < 1) frogs[2][0] = 1;					// don't go over the garden walls!
-		//	};
-
-		//	// see which way to jump in the X direction (left and right)
-
-		//	if (snail[2] - frogs[2][1] > 0)
-		//	{
-		//		frogs[2][1] += FROGLEAP;
-		//		if (frogs[2][1] >= SIZEX - 1) frogs[2][1] = SIZEX - 2;
-		//	}
-		//	else if (snail[1] - frogs[2][1] < 0)
-		//	{
-		//		frogs[2][1] -= FROGLEAP;
-		//		if (frogs[2][1] < 1)	frogs[2][1] = 1;
-		//	};
-
-		//	if (!eatenByEagle(garden, frogs[2]))						// not gotten by eagle?
-		//	{
-		//		if (frogs[2][0] == snail[0] && frogs[2][1] == snail[1])	// landed on snail? - grub up!
-		//		{
-		//			msg = "FROG GOT YOU!";
-		//			cout << Bleeeep;								// produce a death knell
-		//			snailStillAlive = false;							// snail is dead!
-		//			gameEvent = DEADSNAIL;								//NEW record result
-		//		}
-		//		else garden[frogs[2][0]][frogs[2][1]] = FROG;			// display frog on garden (thus destroying any pellet that might be there).
-		//	}
-		//	else {
-		//		msg = "EAGLE GOT A FROG";
-		//		cout << Bleep;											//produce a warning sound
-		//	}
-		//}
-//======================================================
 }
 
 bool eatenByEagle(char garden[][SIZEX], int frog[])

@@ -71,3 +71,30 @@ Average Paint time=	43.250 ms
 Average Init time=	11.941 us
 
 *************************************************************************************************************************
+laptop speed test at current time of working
+Student: Thomas Clark	DATE: 02/12/2017	TIME: 15:17:21
+SUMMARY for 26 games played, with 940 moves entered.
+
+Average frames/sec=	56977.105
+Average Paint time=	44.086 ms
+Average Init time=	11.448 us
+
+*************************************************************************************************************************
+unrolled some for loops test #1
+Student: Thomas Clark	DATE: 02/12/2017	TIME: 15:19:09
+SUMMARY for 26 games played, with 940 moves entered.
+
+Average frames/sec=	66389.996
+Average Paint time=	44.201 ms
+Average Init time=	14.349 us
+
+*************************************************************************************************************************
+unrolled for loops test #2
+Student: Thomas Clark	DATE: 02/12/2017	TIME: 15:21:04
+SUMMARY for 26 games played, with 940 moves entered.
+
+Average frames/sec=	78294.507
+Average Paint time=	44.039 ms
+Average Init time=	14.567 us
+
+*************************************************************************************************************************
