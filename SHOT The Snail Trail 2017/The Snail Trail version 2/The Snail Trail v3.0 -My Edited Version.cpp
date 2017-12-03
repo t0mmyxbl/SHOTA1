@@ -168,9 +168,9 @@ char gameEvent(0);		//NEW saves any event such as Frog being eaten by eagle for 
 const char WIN('W');	//NEW
 const char STUCK('S');	//NEW
 
-double InitTimeTotal(0.);	//NEW
-double FrameTimeTotal(0.);	//NEW
-double PaintTimeTotal(0.);	//NEW
+float InitTimeTotal(0.);	//NEW
+float FrameTimeTotal(0.);	//NEW
+float PaintTimeTotal(0.);	//NEW
 int GamesPlayed(0);			//NEW
 int TotalMovesMade(0);		//NEW
 
@@ -198,8 +198,8 @@ int __cdecl main()
 	int anotherGo(int, int);
 
 	// Timing info
-	void showTimes(double, double, double, int, int);
-	void saveData(double, double, double, int, string, float);	//NEW
+	void showTimes(float, float, float, int, int);
+	void saveData(float, float, float, int, string, float);	//NEW
 	void openFiles(void);										//NEW
 
 
@@ -1127,7 +1127,7 @@ int anotherGo(int column, int row)
 } // end of anotherGo
 
 
-void showTimes(double InitTimeSecs, double FrameTimeSecs, double PaintTimeSecs, int column, int row)
+void showTimes(float InitTimeSecs, float FrameTimeSecs, float PaintTimeSecs, int column, int row)
 { // show various times as a measure of performance
 
 #define milli (1000.)
@@ -1143,7 +1143,7 @@ void showTimes(double InitTimeSecs, double FrameTimeSecs, double PaintTimeSecs, 
 	printf("Paint Game=      %0.5f", PaintTimeSecs * milli);
 	printf(" ms");
 	Gotoxy(column, row + 3);
-	printf("Frames/sec=      %0.3f", (double) 1.0 / FrameTimeSecs);
+	printf("Frames/sec=      %0.3f", (float) 1.0 / FrameTimeSecs);
 	printf(" at %0.5f", FrameTimeSecs * milli);
 	printf(" ms/frame");
 
@@ -1152,7 +1152,7 @@ void showTimes(double InitTimeSecs, double FrameTimeSecs, double PaintTimeSecs, 
 
 // NEW declarations ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void saveData (double InitTimeSecs, double FrameTimeSecs, double PaintTimeSecs, int key, string msg, float health)
+void saveData (float InitTimeSecs, float FrameTimeSecs, float PaintTimeSecs, int key, string msg, float health)
 { //NEW save timing and other performance data to a file
 
 #define milli (1000.)
@@ -1190,7 +1190,7 @@ void saveData (double InitTimeSecs, double FrameTimeSecs, double PaintTimeSecs, 
 				gameEvent == WIN             ? "WON GAME  " : 
 				gameEvent == DEADSNAIL       ? "LOST GAME " : "ALIVE     ")
 			<< health * 100.0 << '%'
-			<< "\t\t\t" << (double) 1.0 / FrameTimeSecs << "\t\t" << FrameTimeSecs * milli
+			<< "\t\t\t" << (float) 1.0 / FrameTimeSecs << "\t\t" << FrameTimeSecs * milli
 		    << "\t\t" << msg;									// repeat messages seen on screen
 
 		gameEvent = 0; // reset status
@@ -1208,9 +1208,9 @@ void saveData (double InitTimeSecs, double FrameTimeSecs, double PaintTimeSecs, 
 		ST_Times << "\n\nStudent: "<< studentName << "\tDATE: " << GetDate() << "\tTIME: " << GetTime()
 			<< "\nSUMMARY for " << GamesPlayed << " games played, with " << TotalMovesMade << " moves entered."
 		    << setprecision(3) 
-			<< "\n\nAverage frames/sec=\t" << (double)TotalMovesMade / FrameTimeTotal
-			<< "\nAverage Paint time=\t"   << (PaintTimeTotal * milli) / (double)TotalMovesMade << " ms"
-			<< "\nAverage Init time=\t"    << (InitTimeTotal * micro) / (double)GamesPlayed << " us"
+			<< "\n\nAverage frames/sec=\t" << (float)TotalMovesMade / FrameTimeTotal
+			<< "\nAverage Paint time=\t"   << (PaintTimeTotal * milli) / (float)TotalMovesMade << " ms"
+			<< "\nAverage Init time=\t"    << (InitTimeTotal * micro) / (float)GamesPlayed << " us"
 
 		    << "\n\n*************************************************************************************************************************";
 	};
