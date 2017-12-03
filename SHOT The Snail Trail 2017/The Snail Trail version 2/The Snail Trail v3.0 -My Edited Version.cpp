@@ -86,6 +86,8 @@ Annoying bleeps from the PC's speaker announce significant events, check the mes
 #include <fstream>           //for files
 #include <string>            //for string
 #include "hr_time.h"         //for timers
+#include <xmmintrin.h>
+#include <emmintrin.h>
 
 using namespace std;
 
@@ -168,9 +170,9 @@ char gameEvent(0);		//NEW saves any event such as Frog being eaten by eagle for 
 const char WIN('W');	//NEW
 const char STUCK('S');	//NEW
 
-double InitTimeTotal(0.);	//NEW
-double FrameTimeTotal(0.);	//NEW
-double PaintTimeTotal(0.);	//NEW
+float InitTimeTotal(0.);	//NEW
+float FrameTimeTotal(0.);	//NEW
+float PaintTimeTotal(0.);	//NEW
 int GamesPlayed(0);			//NEW
 int TotalMovesMade(0);		//NEW
 
@@ -183,23 +185,23 @@ int __cdecl main()
 {
 	//function prototypes
 
-	void initialiseGame(int&, bool&, char[][SIZEX], char[][SIZEX], int[], int[][2], char[][SIZEX]);
+	void initialiseGame(int&, bool&, char[][SIZEX], char[][SIZEX], __m128i, __m128i, char[][SIZEX]);
 	void paintGame(string message, char[][SIZEX]);
 	void clearMessage(string& message);
 
 	int getKeyPress();
-	void analyseKey(string& message, int, int move[2]);
-	void moveSnail(char[][SIZEX], int[], int[], string&, char[][SIZEX], char[][SIZEX]);
-	void moveFrogs(int[], int[][2], string&, char[][SIZEX], char[][SIZEX]);
-	void placeSnail(char[][SIZEX], int[]);
+	void analyseKey(string& message, int, __m128i pmove);
+	void moveSnail(char[][SIZEX], __m128i, __m128i, string&, char[][SIZEX], char[][SIZEX]);
+	void moveFrogs(__m128i, __m128i, string&, char[][SIZEX], char[][SIZEX]);
+	void placeSnail(char[][SIZEX], __m128i);
 	void dissolveSlime(char[][SIZEX], char[][SIZEX]);
 	void showFood(char[][SIZEX], char[][SIZEX]);
 
 	int anotherGo(int, int);
 
 	// Timing info
-	void showTimes(double, double, double, int, int);
-	void saveData(double, double, double, int, string, float);	//NEW
+	void showTimes(float, float, float, int, int);
+	void saveData(float, float, float, int, string, float);	//NEW
 	void openFiles(void);										//NEW
 
 
@@ -210,9 +212,13 @@ int __cdecl main()
 	char foodSources[SIZEY][SIZEX];		// remember where the lettuces are planted and worms are
 
 	string message;							// various messages are produced in game.
-	int  snail[2];							// the snail's current position (x,y)
-	int  frogs[NUM_FROGS][2];				// coordinates of the frog contingent n * (x,y)
-	int  move[2];							// the requested move direction
+	__declspec(align(16)) int  snail[2];							// the snail's current position (x,y)
+	__declspec(align(16)) int  frogs[NUM_FROGS][2];				// coordinates of the frog contingent n * (x,y)
+	__declspec(align(16)) int  move[2];							// the requested move direction
+
+	__m128i* psnail = (__m128i*) snail;
+	__m128i* pfrogs = (__m128i*) frogs;
+	__m128i* pmove = (__m128i*) move;
 
 	int  key, newGame(!QUIT);				// start new game by not quitting initially!
 
@@ -234,7 +240,7 @@ int __cdecl main()
 		InitTime.startTimer();
 
 		//initialise garden (incl. walls, frogs, lettuces & snail)
-		initialiseGame(lettucesEaten, fullOfLettuce, slimeTrail, foodSources, snail, frogs, garden);
+		initialiseGame(lettucesEaten, fullOfLettuce, slimeTrail, foodSources, *psnail, *pfrogs, garden);
 		message = "READY TO SLITHER!? PRESS A KEY...";
 
 		InitTime.stopTimer();
@@ -252,12 +258,12 @@ int __cdecl main()
 
 			// ************** code to be timed ***********************************************
 
-			analyseKey(message, key, move);				// get next move from keyboard
-			moveSnail(foodSources, snail, move, message, garden, slimeTrail);
+			analyseKey(message, key, *pmove);				// get next move from keyboard
+			moveSnail(foodSources, *psnail, *pmove, message, garden, slimeTrail);
 			dissolveSlime(garden, slimeTrail);			// remove slime over time from garden
 			showFood(garden, foodSources);				// show remaining lettuces and worms on ground
-			placeSnail(garden, snail);					// move snail in garden
-			moveFrogs(snail, frogs, message, garden, foodSources);	// frogs attempt to home in on snail
+			placeSnail(garden, *psnail);					// move snail in garden
+			moveFrogs(*psnail, *pfrogs, message, garden, foodSources);	// frogs attempt to home in on snail
 
 
 			FrameTime.stopTimer(); // you should eventually uncomment this and comment out the identical line 4 lines down
@@ -285,7 +291,7 @@ int __cdecl main()
 		//							If alive...								If dead...
 		(snailStillAlive) ? message = "WELL DONE, YOU WON!" : message = "REST IN PEAS.";
 
-		if (!snailStillAlive) garden[snail[0]][snail[1]] = DEADSNAIL;
+		if (!snailStillAlive) garden[psnail->m128i_i32[0]][psnail->m128i_i32[1]] = DEADSNAIL;
 		paintGame(message, garden);					// display final game info, garden & message
 
 		newGame = anotherGo(LEFTM, 20);					// Prompt to play again, or Quit game.
@@ -305,17 +311,17 @@ int __cdecl main()
   //													set game configuration
 
 void initialiseGame(int& Eaten, bool& fullUp, char slimeTrail[][SIZEX], char foodSources[][SIZEX],
-	int snail[], int frogs[][2], char garden[][SIZEX])
+	__m128i snail, __m128i frogs, char garden[][SIZEX])
 { //initialise garden & place snail somewhere
 
 	void setGarden(char[][SIZEX]);
-	void setSnailInitialCoordinates(int[]);
-	void placeSnail(char[][SIZEX], int[]);
+	void setSnailInitialCoordinates(__m128i);
+	void placeSnail(char[][SIZEX], __m128i);
 	void initialiseSlimeTrail(char[][SIZEX]);
 	void initialiseFoodSources(char[][SIZEX]);
 	void showFood(char[][SIZEX], char[][SIZEX]);
-	void scatterStuff(char[][SIZEX], char[][SIZEX], int[]);
-	void scatterFrogs(char[][SIZEX], int[], int[][2]);
+	void scatterStuff(char[][SIZEX], char[][SIZEX], __m128i);
+	void scatterFrogs(char[][SIZEX], __m128i, __m128i);
 
 	snailStillAlive = true;					// bring snail to life!
 	setSnailInitialCoordinates(snail);		// initialise snail position
@@ -334,11 +340,11 @@ void initialiseGame(int& Eaten, bool& fullUp, char slimeTrail[][SIZEX], char foo
 
 //**************************************************************************
 //												randomly drop snail in garden
-void setSnailInitialCoordinates(int snail[])
+void setSnailInitialCoordinates(__m128i snail)
 { //set snail's coordinates inside the garden at random at beginning of game
 
-	snail[0] = Random(SIZEY - 2);		// vertical coordinate in range [1..(SIZEY - 2)]
-	snail[1] = Random(SIZEX - 2);		// horizontal coordinate in range [1..(SIZEX - 2)]
+	snail.m128i_i32[0] = Random(SIZEY - 2);		// vertical coordinate in range [1..(SIZEY - 2)]
+	snail.m128i_i32[1] = Random(SIZEX - 2);		// horizontal coordinate in range [1..(SIZEX - 2)]
 }
 
 //**************************************************************************
@@ -362,10 +368,10 @@ void setGarden(char garden[][SIZEX])
 
   //**************************************************************************
   //														place snail in garden
-void placeSnail(char garden[][SIZEX], int snail[])
+void placeSnail(char garden[][SIZEX], __m128i snail)
 { //place snail at its new position in garden
 
-	garden[snail[0]][snail[1]] = SNAIL;
+	garden[snail.m128i_i32[0]][snail.m128i_i32[1]] = SNAIL;
 } //end of placeSnail
 
   //**************************************************************************
@@ -474,24 +480,23 @@ void initialiseFoodSources(char foodSources[][SIZEX])
 
 //**************************************************************************
 //												implement arrow key move
-void analyseKey(string& msg, int key, int move[2])
+void analyseKey(string& msg, int key, __m128i move)
 { //calculate snail movement required depending on the arrow key pressed
 	if (key == LEFT){
-		move[0] = 0; move[1] = -1;	// decrease the X coordinate
+		_mm_set_pi32(0, -1);	// decrease the X coordinate
 	}
 	else if (key == RIGHT){
-		move[0] = 0; move[1] = +1;	// increase the X coordinate
+		_mm_set_pi32(0, 1);	// increase the X coordinate
 	}
 	else if (key == UP) {
-		move[0] = -1; move[1] = 0;	// decrease the Y coordinate
+		_mm_set_pi32(-1, 0);	// decrease the Y coordinate
 	}
 	else if (key == DOWN){
-		move[0] = +1; move[1] = 0;	// increase the Y coordinate
+		_mm_set_pi32(1, 0);	// increase the Y coordinate
 	}
 	else {
 		msg = "INVALID KEY";	// prepare error message
-		move[0] = 0;			// move snail out of the garden
-		move[1] = 0;
+		_mm_set_pi32(0, 0);			// move snail out of the garden
 	}
 }
 
@@ -864,7 +869,6 @@ bool eatenByEagle(char garden[][SIZEX], int frog[])
 
 // end of moveFrogs
 
-
 //**************************************************************************
 //											implement player's move command
 
@@ -1127,7 +1131,7 @@ int anotherGo(int column, int row)
 } // end of anotherGo
 
 
-void showTimes(double InitTimeSecs, double FrameTimeSecs, double PaintTimeSecs, int column, int row)
+void showTimes(float InitTimeSecs, float FrameTimeSecs, float PaintTimeSecs, int column, int row)
 { // show various times as a measure of performance
 
 #define milli (1000.)
@@ -1143,7 +1147,7 @@ void showTimes(double InitTimeSecs, double FrameTimeSecs, double PaintTimeSecs, 
 	printf("Paint Game=      %0.5f", PaintTimeSecs * milli);
 	printf(" ms");
 	Gotoxy(column, row + 3);
-	printf("Frames/sec=      %0.3f", (double) 1.0 / FrameTimeSecs);
+	printf("Frames/sec=      %0.3f", (float) 1.0 / FrameTimeSecs);
 	printf(" at %0.5f", FrameTimeSecs * milli);
 	printf(" ms/frame");
 
@@ -1152,7 +1156,7 @@ void showTimes(double InitTimeSecs, double FrameTimeSecs, double PaintTimeSecs, 
 
 // NEW declarations ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void saveData (double InitTimeSecs, double FrameTimeSecs, double PaintTimeSecs, int key, string msg, float health)
+void saveData (float InitTimeSecs, float FrameTimeSecs, float PaintTimeSecs, int key, string msg, float health)
 { //NEW save timing and other performance data to a file
 
 #define milli (1000.)
@@ -1190,7 +1194,7 @@ void saveData (double InitTimeSecs, double FrameTimeSecs, double PaintTimeSecs, 
 				gameEvent == WIN             ? "WON GAME  " : 
 				gameEvent == DEADSNAIL       ? "LOST GAME " : "ALIVE     ")
 			<< health * 100.0 << '%'
-			<< "\t\t\t" << (double) 1.0 / FrameTimeSecs << "\t\t" << FrameTimeSecs * milli
+			<< "\t\t\t" << (float) 1.0 / FrameTimeSecs << "\t\t" << FrameTimeSecs * milli
 		    << "\t\t" << msg;									// repeat messages seen on screen
 
 		gameEvent = 0; // reset status
@@ -1208,9 +1212,10 @@ void saveData (double InitTimeSecs, double FrameTimeSecs, double PaintTimeSecs, 
 		ST_Times << "\n\nStudent: "<< studentName << "\tDATE: " << GetDate() << "\tTIME: " << GetTime()
 			<< "\nSUMMARY for " << GamesPlayed << " games played, with " << TotalMovesMade << " moves entered."
 		    << setprecision(3) 
-			<< "\n\nAverage frames/sec=\t" << (double)TotalMovesMade / FrameTimeTotal
-			<< "\nAverage Paint time=\t"   << (PaintTimeTotal * milli) / (double)TotalMovesMade << " ms"
-			<< "\nAverage Init time=\t"    << (InitTimeTotal * micro) / (double)GamesPlayed << " us"
+			<< "\n\nAverage frames/sec=\t" << (float)TotalMovesMade / FrameTimeTotal
+			<< "\nAverage Paint time=\t"   << (PaintTimeTotal * milli) / (float
+				)TotalMovesMade << " ms"
+			<< "\nAverage Init time=\t"    << (InitTimeTotal * micro) / (float)GamesPlayed << " us"
 
 		    << "\n\n*************************************************************************************************************************";
 	};
