@@ -441,9 +441,9 @@ void paintGarden(const string garden[SIZEY])
 	{
 		for (int x(0); x < (SIZEX); ++x)
 		{
-			//printf("%c", garden[y].at[x]);
-			char gardenOutput = garden[y][x];			// display current garden contents
-			puts(gardenOutput);
+			printf("%c", garden[y].at[x]);
+			//char gardenOutput = garden[y][x];			// display current garden contents
+			//putch(gardenOutput);
 		}
 		printf("\n");
 	}
@@ -692,25 +692,25 @@ void scatterStuff(string garden[SIZEY], char foodSources[][SIZEX], int snail[])
 //**************************************************************************
 //									some frogs have arrived looking for lunch
 
-void scatterFrogs(string garden[SIZEY], int snail[], int frogs[][2])
+void scatterFrogs(char garden[][SIZEX], int snail[], int frogs[][2])
 {
 	// need to avoid the snail initially (seems a bit unfair otherwise!). Frogs aren't affected by
 	// slug pellets, btw, and will absorb them, and they may land on lettuces or worms without damage.
 
 		int x(Random(SIZEX - 2)), y(Random(SIZEY - 2));	// prime coords before checking
-		while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y].at[x] == FROG);		// avoid snail and existing frogs
+		while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == FROG);		// avoid snail and existing frogs
 
 		frogs[0][0] = y;								// store initial positions of frog
 		frogs[0][1] = x;
-		garden[frogs[0][0]].at[frogs[0][1]] = FROG;		// put frogs on garden (this may overwrite a slug pellet) #1
+		garden[frogs[0][0]][frogs[0][1]] = FROG;		// put frogs on garden (this may overwrite a slug pellet) #1
 
 		x = (Random(SIZEX - 2));
 		y = (Random(SIZEY - 2));	// prime coords before checking
-		while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y].at[x] == FROG);		// avoid snail and existing frogs
+		while (((y = Random(SIZEY - 2)) == snail[0]) && ((x = Random(SIZEX - 2)) == snail[1]) || garden[y][x] == FROG);		// avoid snail and existing frogs
 
 		frogs[1][0] = y;								// store initial positions of frog
 		frogs[1][1] = x;
-		garden[frogs[1][0]].at[frogs[1][1]] = FROG;		// put frogs on garden (this may overwrite a slug pellet) #2
+		garden[frogs[1][0]][frogs[1][1]] = FROG;		// put frogs on garden (this may overwrite a slug pellet) #2
 
 }
 
@@ -718,7 +718,7 @@ void scatterFrogs(string garden[SIZEY], int snail[], int frogs[][2])
 //**************************************************************************
 //							move the Frogs toward the snail - watch for eagles!
 
-void moveFrogs(int snail[], int frogs[][2], string& msg, string garden[SIZEY], char lettuces[][SIZEX])
+void moveFrogs(int snail[], int frogs[][2], string& msg, char garden[][SIZEX], char lettuces[][SIZEX])
 {
 	//	Frogs move toward the snail. They jump 'n' positions at a time in either or both x and y
 	//	directions, but don't jump out of the garden. 
@@ -727,7 +727,7 @@ void moveFrogs(int snail[], int frogs[][2], string& msg, string garden[SIZEY], c
 	//  absorbed harmlessly by the frog (thus inadvertently helping the snail!).
 	//	Frogs may also be randomly eaten by an eagle, with only the bones left behind.
 
-	bool eatenByEagle(string[SIZEY], int[]);
+	bool eatenByEagle(char[][SIZEX], int[]);
 
 //======================FROG 1===========================
 
@@ -736,10 +736,10 @@ void moveFrogs(int snail[], int frogs[][2], string& msg, string garden[SIZEY], c
 			// jump off garden (taking any slug pellet with it)... check it wasn't on a lettuce or worm though...
 
 			if (lettuces[frogs[0][0]][frogs[0][1]] == LETTUCE)
-				garden[frogs[0][0]].at[frogs[0][1]] = LETTUCE;
+				garden[frogs[0][0]][frogs[0][1]] = LETTUCE;
 			else  if (lettuces[frogs[0][0]][frogs[0][1]] == WORM)
-				garden[frogs[0][0]].at[frogs[0][1]] = WORM;
-			else garden[frogs[0][0]].at[frogs[0][1]] = GRASS;
+				garden[frogs[0][0]][frogs[0][1]] = WORM;
+			else garden[frogs[0][0]][frogs[0][1]] = GRASS;
 
 			// Work out where to jump to depending on where the snail is...
 
@@ -779,7 +779,7 @@ void moveFrogs(int snail[], int frogs[][2], string& msg, string garden[SIZEY], c
 					snailStillAlive = false;							// snail is dead!
 					gameEvent = DEADSNAIL;								//NEW record result
 				}
-				else garden[frogs[0][0]].at[frogs[0][1]] = FROG;			// display frog on garden (thus destroying any pellet that might be there).
+				else garden[frogs[0][0]][frogs[0][1]] = FROG;			// display frog on garden (thus destroying any pellet that might be there).
 			}
 			else {
 				msg = "EAGLE GOT A FROG";
@@ -794,10 +794,10 @@ void moveFrogs(int snail[], int frogs[][2], string& msg, string garden[SIZEY], c
 			// jump off garden (taking any slug pellet with it)... check it wasn't on a lettuce or worm though...
 
 			if (lettuces[frogs[1][0]][frogs[1][1]] == LETTUCE)
-				garden[frogs[1][0]].at[frogs[1][1]] = LETTUCE;
+				garden[frogs[1][0]][frogs[1][1]] = LETTUCE;
 			else  if (lettuces[frogs[1][0]][frogs[1][1]] == WORM)
-				garden[frogs[1][0]].at[frogs[1][1]] = WORM;
-			else garden[frogs[1][0]].at[frogs[1][1]] = GRASS;
+				garden[frogs[1][0]][frogs[1][1]] = WORM;
+			else garden[frogs[1][0]][frogs[1][1]] = GRASS;
 
 			// Work out where to jump to depending on where the snail is...
 
@@ -837,7 +837,7 @@ void moveFrogs(int snail[], int frogs[][2], string& msg, string garden[SIZEY], c
 					snailStillAlive = false;							// snail is dead!
 					gameEvent = DEADSNAIL;								//NEW record result
 				}
-				else garden[frogs[1][0]].at[frogs[1][1]] = FROG;			// display frog on garden (thus destroying any pellet that might be there).
+				else garden[frogs[1][0]][frogs[1][1]] = FROG;			// display frog on garden (thus destroying any pellet that might be there).
 			}
 			else {
 				msg = "EAGLE GOT A FROG";
@@ -847,7 +847,7 @@ void moveFrogs(int snail[], int frogs[][2], string& msg, string garden[SIZEY], c
 //=================================================
 }
 
-bool eatenByEagle(string garden[SIZEY], int frog[])
+bool eatenByEagle(char garden[][SIZEX], int frog[])
 { //There's a 1 in 'EagleStrike' chance of being eaten
 
 	if (!(Random(int(EagleStrike * 100.0)) == int(EagleStrike * 100.0)))
@@ -855,7 +855,7 @@ bool eatenByEagle(string garden[SIZEY], int frog[])
 		return false;
 	}
 	else {
-		garden[frog[0]].at[frog[1]] = DEAD_FROG_BONES;				// show remnants of frog in garden
+		garden[frog[0]][frog[1]] = DEAD_FROG_BONES;				// show remnants of frog in garden
 		frog[0] = DEAD_FROG_BONES;								// and mark frog as deceased
 		gameEvent = DEAD_FROG_BONES;							//NEW record result
 		return true;
@@ -868,7 +868,7 @@ bool eatenByEagle(string garden[SIZEY], int frog[])
 //**************************************************************************
 //											implement player's move command
 
-void moveSnail(char foodSources[][SIZEX], int snail[], int keyMove[], string& msg, string garden[SIZEY], char slimeTrail[][SIZEX])
+void moveSnail(char foodSources[][SIZEX], int snail[], int keyMove[], string& msg, char garden[][SIZEX], char slimeTrail[][SIZEX])
 {
 	// move snail on the garden when possible.
 	// check intended new position & move if possible...
@@ -880,24 +880,24 @@ void moveSnail(char foodSources[][SIZEX], int snail[], int keyMove[], string& ms
 		int targetY(snail[0] + keyMove[0]);
 		int targetX(snail[1] + keyMove[1]);
 
-		if ((garden[targetY].at[targetX] == GRASS) || (garden[targetY].at[targetX] == DEAD_FROG_BONES))
+		if ((garden[targetY][targetX] == GRASS) || (garden[targetY][targetX] == DEAD_FROG_BONES))
 		{
-			garden[snail[0]].at[snail[1]] = SLIME;				// lay a trail of slime
+			garden[snail[0]][snail[1]] = SLIME;				// lay a trail of slime
 			slimeTrail[snail[0]][snail[1]] = SLIMELIFE;		// set slime life span
 			snail[0] += keyMove[0];							// go in direction indicated by keyMove
 			snail[1] += keyMove[1];
 			moveResult = GRASS;								//NEW record result of move
 		}
-		else if (garden[targetY].at[targetX] == WALL)
+		else if (garden[targetY][targetX] == WALL)
 		{
 			cout << Bleep;				// produce a warning sound
 			msg = "THAT'S A WALL!";
 			lifeLeft += ENERGY_USED;	// didn't move, so return some health!
 			moveResult = WALL;			//NEW record result of move
 		}
-		else if (garden[targetY].at[targetX] == LETTUCE)
+		else if (garden[targetY][targetX] == LETTUCE)
 		{
-			garden[snail[0]].at[snail[1]] = SLIME;				//lay a trail of slime
+			garden[snail[0]][snail[1]] = SLIME;				//lay a trail of slime
 			slimeTrail[snail[0]][snail[1]] = SLIMELIFE;		//set slime LIFE_SPAN
 			snail[0] += keyMove[0];							//go in direction indicated by keyMove
 			snail[1] += keyMove[1];
@@ -914,9 +914,9 @@ void moveSnail(char foodSources[][SIZEX], int snail[], int keyMove[], string& ms
 			if (fullOfLettuce) gameEvent = WIN;				//NEW record result
 			moveResult = LETTUCE;							//NEW record result of move
 		}
-		else if (garden[targetY].at[targetX] == PELLET)
+		else if (garden[targetY][targetX] == PELLET)
 		{
-			garden[snail[0]].at[snail[1]] = SLIME;				// lay a trail of slime
+			garden[snail[0]][snail[1]] = SLIME;				// lay a trail of slime
 			slimeTrail[snail[0]][snail[1]] = SLIMELIFE;		// set slime LIFE_SPAN
 			snail[0] += keyMove[0];							// go in direction indicated by keyMove
 			snail[1] += keyMove[1];
@@ -926,9 +926,9 @@ void moveSnail(char foodSources[][SIZEX], int snail[], int keyMove[], string& ms
 			lifeLeft *= (LIFE_SPAN - PELLET_POISON);		// lose a bit of health
 			moveResult = PELLET;							//NEW record result of move
 		}
-		else if (garden[targetY].at[targetX] == WORM)
+		else if (garden[targetY][targetX] == WORM)
 		{
-			garden[snail[0]].at[snail[1]] = SLIME;				// lay a trail of slime
+			garden[snail[0]][snail[1]] = SLIME;				// lay a trail of slime
 			slimeTrail[snail[0]][snail[1]] = SLIMELIFE;		// set slime LIFE_SPAN
 			snail[0] += keyMove[0];							// go in direction indicated by keyMove
 			snail[1] += keyMove[1];
@@ -940,9 +940,9 @@ void moveSnail(char foodSources[][SIZEX], int snail[], int keyMove[], string& ms
 			else lifeLeft += WORM_ENERGY;
 			moveResult = WORM;								//NEW record result of move
 		}
-		else if (garden[targetY].at[targetX] == FROG)
+		else if (garden[targetY][targetX] == FROG)
 		{
-			garden[snail[0]].at[snail[1]] = SLIME;				// lay a final trail of slime
+			garden[snail[0]][snail[1]] = SLIME;				// lay a final trail of slime
 			snail[0] += keyMove[0];							// go in direction indicated by keyMove
 			snail[1] += keyMove[1];
 			msg = "OH NO! A FROG!";
@@ -951,7 +951,7 @@ void moveSnail(char foodSources[][SIZEX], int snail[], int keyMove[], string& ms
 			moveResult = FROG;								//NEW record result of move
 			gameEvent = DEADSNAIL;							//NEW record result of move
 		}
-		else if (garden[targetY].at[targetX] == SLIME)
+		else if (garden[targetY][targetX] == SLIME)
 		{
 			cout << Bleep;		// produce a warning sound
 			msg = "THAT'S SLIME!";
