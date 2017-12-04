@@ -311,8 +311,7 @@ void initialiseGame(int& Eaten, bool& fullUp, char slimeTrail[][SIZEX], char foo
 	void setGarden(char[][SIZEX]);
 	void setSnailInitialCoordinates(int[]);
 	void placeSnail(char[][SIZEX], int[]);
-	void initialiseSlimeTrail(char[][SIZEX]);
-	void initialiseFoodSources(char[][SIZEX]);
+	void initialiseSlimeTrailandFoodSources(char[][SIZEX], char[][SIZEX]);
 	void showFood(char[][SIZEX], char[][SIZEX]);
 	void scatterStuff(char[][SIZEX], char[][SIZEX], int[]);
 	void scatterFrogs(char[][SIZEX], int[], int[][2]);
@@ -321,8 +320,7 @@ void initialiseGame(int& Eaten, bool& fullUp, char slimeTrail[][SIZEX], char foo
 	setSnailInitialCoordinates(snail);		// initialise snail position
 	setGarden(garden);					// reset the garden
 	placeSnail(garden, snail);			// place snail at a random position in garden
-	initialiseSlimeTrail(slimeTrail);		// no slime until snail moves
-	initialiseFoodSources(foodSources);		// lettuces not been planted yet
+	initialiseSlimeTrailandFoodSources(slimeTrail, foodSources);		// no slime until snail moves and lettuces not been planted yet	
 	scatterStuff(garden, foodSources, snail);	// randomly scatter stuff about the garden (see function for details)
 	showFood(garden, foodSources);			// show lettuces on ground
 	scatterFrogs(garden, snail, frogs);		// randomly place a few frogs around
@@ -443,7 +441,7 @@ void paintGarden(const char garden[][SIZEX])
 		{
 			printf("%c", garden[y][x]);
 			//char gardenOutput = garden[y][x];			// display current garden contents
-			//putch(gardenOutput);
+			//puts(gardenOutput);
 		}
 		printf("\n");
 	}
@@ -452,25 +450,15 @@ void paintGarden(const char garden[][SIZEX])
 
   //**************************************************************************
   //															no slime yet!
-void initialiseSlimeTrail(char slimeTrail[][SIZEX])
-{ // set the whole array to 0
-
-	for (int x = 1; x < SIZEX - 1; x++)			// can't slime the walls
-		for (int y = 1; y < SIZEY - 1; y++)
-			slimeTrail[y][x] = 0;
-}
-
-
-//**************************************************************************
-//													no lettuces or worms yet!
-void initialiseFoodSources(char foodSources[][SIZEX])
-{ // set the whole array to grass
+void initialiseSlimeTrailandFoodSources(char slimeTrail[][SIZEX], char foodSources[][SIZEX])
+{ // set the whole array to 0 and grass
 
 	for (int x = 1; x < SIZEX - 1; x++)		// can't put stuff in the walls!
-		for (int y = 1; y < SIZEY - 1; y++)
-			foodSources[y][x] = GRASS;
+		for (int y = 1; y < SIZEY - 1; y++) {
+			slimeTrail[y][x] = 0;
+			foodSources[y][x] = GRASS;	
+		}
 }
-
 
 //**************************************************************************
 //												implement arrow key move
