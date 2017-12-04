@@ -80,7 +80,7 @@ Annoying bleeps from the PC's speaker announce significant events, check the mes
 //---------------------------------
 //include libraries
 //include standard libraries
-#include <iostream>          //for output and input
+//#include <iostream>          //for output and input
 #include <iomanip>           //for formatted output in 'cout'
 #include <conio.h>           //for getch
 #include <fstream>           //for files
@@ -311,7 +311,8 @@ void initialiseGame(int& Eaten, bool& fullUp, char slimeTrail[][SIZEX], char foo
 	void setGarden(char[][SIZEX]);
 	void setSnailInitialCoordinates(int[]);
 	void placeSnail(char[][SIZEX], int[]);
-	void initialiseSlimeTrailandFoodSources(char[][SIZEX], char[][SIZEX]);
+	void initialiseSlimeTrail(char[][SIZEX]);
+	void initialiseFoodSources(char[][SIZEX]);
 	void showFood(char[][SIZEX], char[][SIZEX]);
 	void scatterStuff(char[][SIZEX], char[][SIZEX], int[]);
 	void scatterFrogs(char[][SIZEX], int[], int[][2]);
@@ -320,7 +321,8 @@ void initialiseGame(int& Eaten, bool& fullUp, char slimeTrail[][SIZEX], char foo
 	setSnailInitialCoordinates(snail);		// initialise snail position
 	setGarden(garden);					// reset the garden
 	placeSnail(garden, snail);			// place snail at a random position in garden
-	initialiseSlimeTrailandFoodSources(slimeTrail, foodSources);		// no slime until snail moves and lettuces not been planted yet	
+	initialiseSlimeTrail(slimeTrail);		// no slime until snail moves
+	initialiseFoodSources(foodSources);		// lettuces not been planted yet
 	scatterStuff(garden, foodSources, snail);	// randomly scatter stuff about the garden (see function for details)
 	showFood(garden, foodSources);			// show lettuces on ground
 	scatterFrogs(garden, snail, frogs);		// randomly place a few frogs around
@@ -440,25 +442,35 @@ void paintGarden(const char garden[][SIZEX])
 		for (int x(0); x < (SIZEX); ++x)
 		{
 			printf("%c", garden[y][x]);
-			//char gardenOutput = garden[y][x];			// display current garden contents
-			//puts(gardenOutput);
+			//char gardenOutput[x] = garden[y][x];			// display current garden contents
+			
 		}
 		printf("\n");
-	}
+	} //puts(gardenOutput);
 } //end of paintGarden
 
 
   //**************************************************************************
   //															no slime yet!
-void initialiseSlimeTrailandFoodSources(char slimeTrail[][SIZEX], char foodSources[][SIZEX])
-{ // set the whole array to 0 and grass
+void initialiseSlimeTrail(char slimeTrail[][SIZEX])
+{ // set the whole array to 0
+
+	for (int x = 1; x < SIZEX - 1; x++)			// can't slime the walls
+		for (int y = 1; y < SIZEY - 1; y++)
+			slimeTrail[y][x] = 0;
+}
+
+
+//**************************************************************************
+//													no lettuces or worms yet!
+void initialiseFoodSources(char foodSources[][SIZEX])
+{ // set the whole array to grass
 
 	for (int x = 1; x < SIZEX - 1; x++)		// can't put stuff in the walls!
-		for (int y = 1; y < SIZEY - 1; y++) {
-			slimeTrail[y][x] = 0;
-			foodSources[y][x] = GRASS;	
-		}
+		for (int y = 1; y < SIZEY - 1; y++)
+			foodSources[y][x] = GRASS;
 }
+
 
 //**************************************************************************
 //												implement arrow key move
@@ -762,16 +774,14 @@ void moveFrogs(int snail[], int frogs[][2], string& msg, char garden[][SIZEX], c
 			{
 				if (frogs[0][0] == snail[0] && frogs[0][1] == snail[1])	// landed on snail? - grub up!
 				{
-					msg = "FROG GOT YOU!";
-					cout << Bleeeep;								// produce a death knell
+					msg = "FROG GOT YOU!" + Bleeeep;
 					snailStillAlive = false;							// snail is dead!
 					gameEvent = DEADSNAIL;								//NEW record result
 				}
 				else garden[frogs[0][0]][frogs[0][1]] = FROG;			// display frog on garden (thus destroying any pellet that might be there).
 			}
 			else {
-				msg = "EAGLE GOT A FROG";
-				cout << Bleep;											//produce a warning sound
+				msg = "EAGLE GOT A FROG" + Bleep;
 			}
 		}
 //====================================================
@@ -820,16 +830,14 @@ void moveFrogs(int snail[], int frogs[][2], string& msg, char garden[][SIZEX], c
 			{
 				if (frogs[1][0] == snail[0] && frogs[1][1] == snail[1])	// landed on snail? - grub up!
 				{
-					msg = "FROG GOT YOU!";
-					cout << Bleeeep;								// produce a death knell
+					msg = "FROG GOT YOU!" + Bleeeep;
 					snailStillAlive = false;							// snail is dead!
 					gameEvent = DEADSNAIL;								//NEW record result
 				}
 				else garden[frogs[1][0]][frogs[1][1]] = FROG;			// display frog on garden (thus destroying any pellet that might be there).
 			}
 			else {
-				msg = "EAGLE GOT A FROG";
-				cout << Bleep;											//produce a warning sound
+				msg = "EAGLE GOT A FROG" + Bleep;
 			}
 		}
 //=================================================
@@ -878,8 +886,7 @@ void moveSnail(char foodSources[][SIZEX], int snail[], int keyMove[], string& ms
 		}
 		else if (garden[targetY][targetX] == WALL)
 		{
-			cout << Bleep;				// produce a warning sound
-			msg = "THAT'S A WALL!";
+			msg = Bleep + "THAT'S A WALL!";
 			lifeLeft += ENERGY_USED;	// didn't move, so return some health!
 			moveResult = WALL;			//NEW record result of move
 		}
@@ -896,8 +903,7 @@ void moveSnail(char foodSources[][SIZEX], int snail[], int keyMove[], string& ms
 			if (lifeLeft > LIFE_SPAN) lifeLeft = LIFE_SPAN;	// can't acquire more than 100% energy
 
 			fullOfLettuce = (lettucesEaten == LETTUCE_QUOTA); // if full, stop the game as snail wins!
-			fullOfLettuce ? msg = "LAST LETTUCE EATEN" : msg = "LETTUCE EATEN";
-			fullOfLettuce ? cout << Bleeeep : cout << Bleep;
+			fullOfLettuce ? msg = "LAST LETTUCE EATEN" + Bleeeep : msg = "LETTUCE EATEN" + Bleep;
 			// WIN! WIN! WIN!
 			if (fullOfLettuce) gameEvent = WIN;				//NEW record result
 			moveResult = LETTUCE;							//NEW record result of move
@@ -908,8 +914,7 @@ void moveSnail(char foodSources[][SIZEX], int snail[], int keyMove[], string& ms
 			slimeTrail[snail[0]][snail[1]] = SLIMELIFE;		// set slime LIFE_SPAN
 			snail[0] += keyMove[0];							// go in direction indicated by keyMove
 			snail[1] += keyMove[1];
-			msg = "PELLET ALERT!";
-			cout << Bleep;									// produce a warning sound
+			msg = "PELLET ALERT!" + Bleep;
 
 			lifeLeft *= (LIFE_SPAN - PELLET_POISON);		// lose a bit of health
 			moveResult = PELLET;							//NEW record result of move
@@ -921,8 +926,7 @@ void moveSnail(char foodSources[][SIZEX], int snail[], int keyMove[], string& ms
 			snail[0] += keyMove[0];							// go in direction indicated by keyMove
 			snail[1] += keyMove[1];
 			foodSources[snail[0]][snail[1]] = GRASS;		// eat the worm, only grass left behind
-			msg = "WORM EATEN";
-			cout << Bleep;
+			msg = "WORM EATEN" + Bleep;
 
 			if (lifeLeft > (LIFE_SPAN - WORM_ENERGY)) lifeLeft = LIFE_SPAN;	// can't have more than 100% life span!
 			else lifeLeft += WORM_ENERGY;
@@ -933,16 +937,14 @@ void moveSnail(char foodSources[][SIZEX], int snail[], int keyMove[], string& ms
 			garden[snail[0]][snail[1]] = SLIME;				// lay a final trail of slime
 			snail[0] += keyMove[0];							// go in direction indicated by keyMove
 			snail[1] += keyMove[1];
-			msg = "OH NO! A FROG!";
-			cout << Bleeeep;								// produce a death knell
+			msg = "OH NO! A FROG!" + Bleeeep;
 			snailStillAlive = false;						// game over
 			moveResult = FROG;								//NEW record result of move
 			gameEvent = DEADSNAIL;							//NEW record result of move
 		}
 		else if (garden[targetY][targetX] == SLIME)
 		{
-			cout << Bleep;		// produce a warning sound
-			msg = "THAT'S SLIME!";
+			msg = Bleep + "THAT'S SLIME!";
 			lifeLeft += ENERGY_USED; // didn't move, so return some health!
 			moveResult = SLIME;								//NEW record result of move
 		}
@@ -955,8 +957,7 @@ void moveSnail(char foodSources[][SIZEX], int snail[], int keyMove[], string& ms
 	}
 	else
 	{
-		msg = "EXHAUSTED! TIME TO DIE...";
-		cout << Bleeeep;
+		msg = "EXHAUSTED! TIME TO DIE..." + Bleeeep;
 		snailStillAlive = false;		// if exhausted, game over 
 		gameEvent = DEADSNAIL;			//NEW record result of move
 		return;
