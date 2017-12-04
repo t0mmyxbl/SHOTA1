@@ -116,16 +116,7 @@ Average Paint time=	44.157 ms
 Average Init time=	16.067 us
 
 *************************************************************************************************************************
-
-Student: Thomas Clark	DATE: 04/12/2017	TIME: 10:52:41
-SUMMARY for 26 games played, with 940 moves entered.
-
-Average frames/sec=	148384.359
-Average Paint time=	9.825 ms
-Average Init time=	6.645 us
-
-*************************************************************************************************************************
-
+Uni PC day test
 Student: Thomas Clark	DATE: 04/12/2017	TIME: 10:53:08
 SUMMARY for 26 games played, with 940 moves entered.
 
@@ -134,21 +125,48 @@ Average Paint time=	9.944 ms
 Average Init time=	6.206 us
 
 *************************************************************************************************************************
-
-Student: Thomas Clark	DATE: 04/12/2017	TIME: 11:00:37
-SUMMARY for 26 games played, with 940 moves entered.
-
-Average frames/sec=	136769.594
-Average Paint time=	11.138 ms
-Average Init time=	5.888 us
-
-*************************************************************************************************************************
-
+Removed cout with library and merged initialiseslimetrail and initialisefoodsources functions
 Student: Thomas Clark	DATE: 04/12/2017	TIME: 11:05:00
 SUMMARY for 26 games played, with 940 moves entered.
 
 Average frames/sec=	596432.000
 Average Paint time=	9.909 ms
 Average Init time=	6.415 us
+
+*************************************************************************************************************************
+
+Student: Thomas Clark	DATE: 04/12/2017	TIME: 11:55:23
+SUMMARY for 26 games played, with 940 moves entered.
+
+Average frames/sec=	616737.000
+Average Paint time=	1.630 ms
+Average Init time=	6.700 us
+
+*************************************************************************************************************************
+
+Student: Thomas Clark	DATE: 04/12/2017	TIME: 11:57:26
+SUMMARY for 26 games played, with 940 moves entered.
+
+Average frames/sec=	653533.375
+Average Paint time=	1.566 ms
+Average Init time=	6.492 us
+
+*************************************************************************************************************************
+
+Student: Thomas Clark	DATE: 04/12/2017	TIME: 12:01:27
+SUMMARY for 26 games played, with 940 moves entered.
+
+Average frames/sec=	654571.375
+Average Paint time=	1.660 ms
+Average Init time=	6.535 us
+
+*************************************************************************************************************************
+
+Student: Thomas Clark	DATE: 04/12/2017	TIME: 12:03:15
+SUMMARY for 26 games played, with 940 moves entered.
+
+Average frames/sec=	639836.188
+Average Paint time=	1.576 ms
+Average Init time=	6.722 us
 
 *************************************************************************************************************************

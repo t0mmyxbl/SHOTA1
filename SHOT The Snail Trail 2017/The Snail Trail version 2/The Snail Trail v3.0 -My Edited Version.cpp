@@ -86,6 +86,7 @@ Annoying bleeps from the PC's speaker announce significant events, check the mes
 #include <fstream>           //for files
 #include <string>            //for string
 #include "hr_time.h"         //for timers
+#include <stdio.h>
 
 using namespace std;
 
@@ -311,8 +312,8 @@ void initialiseGame(int& Eaten, bool& fullUp, char slimeTrail[][SIZEX], char foo
 	void setGarden(char[][SIZEX]);
 	void setSnailInitialCoordinates(int[]);
 	void placeSnail(char[][SIZEX], int[]);
-	void initialiseSlimeTrail(char[][SIZEX]);
-	void initialiseFoodSources(char[][SIZEX]);
+	void initialiseSlimeTrailAndFood(char[][SIZEX], char[][SIZEX]);
+	void initialiseFoodSources();
 	void showFood(char[][SIZEX], char[][SIZEX]);
 	void scatterStuff(char[][SIZEX], char[][SIZEX], int[]);
 	void scatterFrogs(char[][SIZEX], int[], int[][2]);
@@ -321,8 +322,7 @@ void initialiseGame(int& Eaten, bool& fullUp, char slimeTrail[][SIZEX], char foo
 	setSnailInitialCoordinates(snail);		// initialise snail position
 	setGarden(garden);					// reset the garden
 	placeSnail(garden, snail);			// place snail at a random position in garden
-	initialiseSlimeTrail(slimeTrail);		// no slime until snail moves
-	initialiseFoodSources(foodSources);		// lettuces not been planted yet
+	initialiseSlimeTrailAndFood(slimeTrail, foodSources);		// no slime until snail moves & lettuces not placed yet
 	scatterStuff(garden, foodSources, snail);	// randomly scatter stuff about the garden (see function for details)
 	showFood(garden, foodSources);			// show lettuces on ground
 	scatterFrogs(garden, snail, frogs);		// randomly place a few frogs around
@@ -433,44 +433,36 @@ void paintGame(string msg, char garden[][SIZEX])
   //													display garden on screen
 void paintGarden(const char garden[][SIZEX])
 { //display garden content on screen
+	string gardenOutput[SIZEY];
 
 	SelectBackColour(clGreen);
 	SelectTextColour(clDarkBlue);
 	Gotoxy(0, 2);
 	for (int y(0); y < (SIZEY); ++y)
-	{
+	{	
 		for (int x(0); x < (SIZEX); ++x)
 		{
-			printf("%c", garden[y][x]);
-			//char gardenOutput[x] = garden[y][x];			// display current garden contents
-			
+			//printf("%c", garden[y][x]);
+			gardenOutput[y].push_back(garden[y][x]);			// display current garden contents
 		}
-		printf("\n");
-	} //puts(gardenOutput);
+		//printf("\n");
+		puts(gardenOutput[y].c_str());
+	}
+
 } //end of paintGarden
 
 
   //**************************************************************************
   //															no slime yet!
-void initialiseSlimeTrail(char slimeTrail[][SIZEX])
+void initialiseSlimeTrailAndFood(char slimeTrail[][SIZEX], char foodSources[][SIZEX])
 { // set the whole array to 0
 
 	for (int x = 1; x < SIZEX - 1; x++)			// can't slime the walls
-		for (int y = 1; y < SIZEY - 1; y++)
+		for (int y = 1; y < SIZEY - 1; y++) {
 			slimeTrail[y][x] = 0;
-}
-
-
-//**************************************************************************
-//													no lettuces or worms yet!
-void initialiseFoodSources(char foodSources[][SIZEX])
-{ // set the whole array to grass
-
-	for (int x = 1; x < SIZEX - 1; x++)		// can't put stuff in the walls!
-		for (int y = 1; y < SIZEY - 1; y++)
 			foodSources[y][x] = GRASS;
+		}
 }
-
 
 //**************************************************************************
 //												implement arrow key move
