@@ -71,7 +71,7 @@ Average Paint time=	43.250 ms
 Average Init time=	11.941 us
 
 *************************************************************************************************************************
-laptop speed test at current time of working
+laptop speed test 02/12/17
 Student: Thomas Clark	DATE: 02/12/2017	TIME: 15:17:21
 SUMMARY for 26 games played, with 940 moves entered.
 
@@ -116,7 +116,7 @@ Average Paint time=	44.157 ms
 Average Init time=	16.067 us
 
 *************************************************************************************************************************
-Uni PC day test
+Uni PC 04/12/17 test
 Student: Thomas Clark	DATE: 04/12/2017	TIME: 10:53:08
 SUMMARY for 26 games played, with 940 moves entered.
 
@@ -134,7 +134,7 @@ Average Paint time=	9.909 ms
 Average Init time=	6.415 us
 
 *************************************************************************************************************************
-
+Changed PaintGarden to puts
 Student: Thomas Clark	DATE: 04/12/2017	TIME: 11:55:23
 SUMMARY for 26 games played, with 940 moves entered.
 
@@ -143,7 +143,7 @@ Average Paint time=	1.630 ms
 Average Init time=	6.700 us
 
 *************************************************************************************************************************
-
+^ #2
 Student: Thomas Clark	DATE: 04/12/2017	TIME: 11:57:26
 SUMMARY for 26 games played, with 940 moves entered.
 
@@ -152,21 +152,66 @@ Average Paint time=	1.566 ms
 Average Init time=	6.492 us
 
 *************************************************************************************************************************
-
-Student: Thomas Clark	DATE: 04/12/2017	TIME: 12:01:27
+Home PC 04/12/17 #1 (paint time is always slower on home pc for some reason)
+Student: Thomas Clark	DATE: 04/12/2017	TIME: 15:07:46
 SUMMARY for 26 games played, with 940 moves entered.
 
-Average frames/sec=	654571.375
-Average Paint time=	1.660 ms
-Average Init time=	6.535 us
+Average frames/sec=	522627.719
+Average Paint time=	15.417 ms
+Average Init time=	11.973 us
 
 *************************************************************************************************************************
 
-Student: Thomas Clark	DATE: 04/12/2017	TIME: 12:03:15
+Student: Thomas Clark	DATE: 04/12/2017	TIME: 15:45:24
 SUMMARY for 26 games played, with 940 moves entered.
 
-Average frames/sec=	639836.188
-Average Paint time=	1.576 ms
-Average Init time=	6.722 us
+Average frames/sec=	423162.313
+Average Paint time=	17.253 ms
+Average Init time=	16.006 us
+
+*************************************************************************************************************************
+changed paintGarden to a single string puts as opposed to an array of strings
+Student: Thomas Clark	DATE: 04/12/2017	TIME: 20:40:49
+SUMMARY for 26 games played, with 940 moves entered.
+
+Average frames/sec=	523940.719
+Average Paint time=	14.534 ms
+Average Init time=	13.741 us
+
+*************************************************************************************************************************
+same as above #2
+Student: Thomas Clark	DATE: 04/12/2017	TIME: 20:41:26
+SUMMARY for 26 games played, with 940 moves entered.
+
+Average frames/sec=	486312.531
+Average Paint time=	14.562 ms
+Average Init time=	15.359 us
+
+*************************************************************************************************************************
+
+Student: Thomas Clark	DATE: 04/12/2017	TIME: 21:39:56
+SUMMARY for 26 games played, with 940 moves entered.
+
+Average frames/sec=	545406.125
+Average Paint time=	0.561 ms
+Average Init time=	638.393 us
+
+*************************************************************************************************************************
+
+Student: Thomas Clark	DATE: 04/12/2017	TIME: 21:40:45
+SUMMARY for 26 games played, with 940 moves entered.
+
+Average frames/sec=	524291.813
+Average Paint time=	0.542 ms
+Average Init time=	453.639 us
+
+*************************************************************************************************************************
+
+Student: Thomas Clark	DATE: 04/12/2017	TIME: 21:40:53
+SUMMARY for 26 games played, with 940 moves entered.
+
+Average frames/sec=	546358.625
+Average Paint time=	0.544 ms
+Average Init time=	620.330 us
 
 *************************************************************************************************************************

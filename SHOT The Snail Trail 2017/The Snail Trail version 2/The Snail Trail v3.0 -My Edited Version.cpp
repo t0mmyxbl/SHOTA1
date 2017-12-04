@@ -82,11 +82,11 @@ Annoying bleeps from the PC's speaker announce significant events, check the mes
 //include standard libraries
 //#include <iostream>          //for output and input
 #include <iomanip>           //for formatted output in 'cout'
-#include <conio.h>           //for getch
+//#include <conio.h>           //for getch
 #include <fstream>           //for files
 #include <string>            //for string
 #include "hr_time.h"         //for timers
-#include <stdio.h>
+//#include <stdio.h>
 
 using namespace std;
 
@@ -236,7 +236,7 @@ int __cdecl main()
 
 		//initialise garden (incl. walls, frogs, lettuces & snail)
 		initialiseGame(lettucesEaten, fullOfLettuce, slimeTrail, foodSources, snail, frogs, garden);
-		message = "READY TO SLITHER!? PRESS A KEY...";
+		message = "READY TO SLITHER!? PRESS A KEY...\t\t";
 
 		InitTime.stopTimer();
 		// *************** end of timed section ******************************************
@@ -274,6 +274,7 @@ int __cdecl main()
 			
 			// NEW Save performance data outside of game loop
 			saveData(InitTime.getElapsedTime(), FrameTime.getElapsedTime(), PaintTime.getElapsedTime(), key, message, lifeLeft); //NEW
+			system("pause");
 			clearMessage(message);						// NEW reset message array here, moved from above (so we can use it above in saveTimes)
 			InitTimesAlreadySaved = TRUE;				// NEW prevent repeated saving of Init timing
 
@@ -318,6 +319,7 @@ void initialiseGame(int& Eaten, bool& fullUp, char slimeTrail[][SIZEX], char foo
 	void scatterStuff(char[][SIZEX], char[][SIZEX], int[]);
 	void scatterFrogs(char[][SIZEX], int[], int[][2]);
 
+
 	snailStillAlive = true;					// bring snail to life!
 	setSnailInitialCoordinates(snail);		// initialise snail position
 	setGarden(garden);					// reset the garden
@@ -326,6 +328,7 @@ void initialiseGame(int& Eaten, bool& fullUp, char slimeTrail[][SIZEX], char foo
 	scatterStuff(garden, foodSources, snail);	// randomly scatter stuff about the garden (see function for details)
 	showFood(garden, foodSources);			// show lettuces on ground
 	scatterFrogs(garden, snail, frogs);		// randomly place a few frogs around
+	
 
 	lifeLeft = LIFE_SPAN;					// reset life span (health)
 	Eaten = 0;								// reset number of lettuces eaten
@@ -433,7 +436,7 @@ void paintGame(string msg, char garden[][SIZEX])
   //													display garden on screen
 void paintGarden(const char garden[][SIZEX])
 { //display garden content on screen
-	string gardenOutput[SIZEY];
+	string gardenOutput;
 
 	SelectBackColour(clGreen);
 	SelectTextColour(clDarkBlue);
@@ -442,13 +445,11 @@ void paintGarden(const char garden[][SIZEX])
 	{	
 		for (int x(0); x < (SIZEX); ++x)
 		{
-			//printf("%c", garden[y][x]);
-			gardenOutput[y].push_back(garden[y][x]);			// display current garden contents
+			gardenOutput.push_back(garden[y][x]);			// display current garden contents
 		}
-		//printf("\n");
-		puts(gardenOutput[y].c_str());
+		gardenOutput.push_back('\n');
 	}
-
+	puts(gardenOutput.c_str());
 } //end of paintGarden
 
 
@@ -1005,7 +1006,7 @@ void showTitle(int column, int row)
 	SelectBackColour(clBlack);
 	SelectTextColour(clYellow);
 	Gotoxy(column, row);
-	printf("...THE SNAIL TRAIL...");
+	puts("...THE SNAIL TRAIL...");
 	SelectBackColour(clWhite);
 	SelectTextColour(clRed);
 
@@ -1013,54 +1014,66 @@ void showTitle(int column, int row)
 
 void showDateAndTime(int column, int row)
 { //show current date and time
+	string date = "DATE: " + GetDate();
+	string time = "TIME: " + GetTime();
 
 	SelectBackColour(clWhite);
 	SelectTextColour(clBlack);
 	Gotoxy(column, row);
-	printf("DATE: ");
-	printf(GetDate().c_str());
+	puts(date.c_str());
 	Gotoxy(column, row + 1);
-	printf("TIME: ");
-	printf(GetTime().c_str());
+	puts(time.c_str());
 } //end of showDateAndTime
 
 void showOptions(int column, int row)
 { //show game options
-	Gotoxy(column, row);
+	const int instructionsRows = 6;
+	string instructions[instructionsRows];
+	instructions[0] = "Instructions";
+	instructions[2] = "* TO MOVE USE ARROW KEYS - EAT ALL " + to_string(LETTUCE_QUOTA) + " LETTUCES TO WIN.";
+	instructions[3] = "* EAT WORMS (";
+	instructions[3] += WORM;
+	instructions[3] += ") AND LETTUCES (";
+	instructions[3] += LETTUCE;
+	instructions[3] += ") TO BOOST HEALTH.";
+	instructions[4] = "* EACH MOVE AND INVISIBLE SLUG PELLETS DEPLETE HEALTH.";
+	instructions[5] = "* TO QUIT ANY TIME USE 'Q'";
+		
 	SelectBackColour(clWhite);
 	SelectTextColour(clBlack);
-	printf("Instructions");
+	Gotoxy(column, row);
+	puts(instructions[0].c_str());
+	row ++;
+
 	SelectBackColour(clRed);
 	SelectTextColour(clYellow);
-	Gotoxy(column, row += 1);
-	printf("* TO MOVE USE ARROW KEYS - EAT ALL ");
-	printf("%i", LETTUCE_QUOTA);
-	printf(" LETTUCES");
-	Gotoxy(column, row += 1);
-	printf("  TO WIN.");
-	Gotoxy(column, row += 1);
-	printf("* EAT WORMS (");
-	printf("%c", WORM);
-	printf(") AND LETTUCES (");
-	printf("%c", LETTUCE);
-	printf(") TO BOOST");
-	Gotoxy(column, row += 1);
-	printf("  HEALTH");
-	Gotoxy(column, row += 1);
-	printf("* EACH MOVE AND INVISIBLE SLUG PELLETS DEPLETE");
-	Gotoxy(column, row += 1);
-	printf("  HEALTH.");
-	Gotoxy(column, row += 1);
-	printf("* TO QUIT ANY TIME USE 'Q'");
+	Gotoxy(column, row);
+	puts(instructions[1].c_str());
+	row++;
+
+	Gotoxy(column, row);
+	puts(instructions[2].c_str());
+	row++;
+
+	Gotoxy(column, row);
+	puts(instructions[3].c_str());
+	row++;
+
+	Gotoxy(column, row);
+	puts(instructions[4].c_str());
+	row++;
+
+	Gotoxy(column, row);
+	puts(instructions[5].c_str());
+
 } //end of showOptions
 
 void showMessage(string msg, int column, int row)
 { //display auxiliary messages if any
-
 	SelectBackColour(clBlack);
 	SelectTextColour(clYellow);
 	Gotoxy(column, row);
-	printf(msg.c_str());			//display current message
+	puts(msg.c_str());			//display current message
 } //end of showMessage
 
 
@@ -1091,7 +1104,7 @@ void showTimingHeadings(int column, int row)
 	SelectBackColour(clBlack);
 	SelectTextColour(clYellow);
 	Gotoxy(column, row);
-	printf("Game Timings:");
+	puts("Game Timings:");
 } //end of showTimingHeadings
 
 int anotherGo(int column, int row)
@@ -1100,7 +1113,7 @@ int anotherGo(int column, int row)
 	SelectBackColour(clRed);
 	SelectTextColour(clYellow);
 	Gotoxy(column, row);
-	printf("PRESS 'Q' AGAIN TO QUIT, OR ANY KEY TO CONTINUE");
+	puts("PRESS 'Q' AGAIN TO QUIT, OR ANY KEY TO CONTINUE");
 	SelectBackColour(clBlack);
 	SelectTextColour(clWhite);
 
@@ -1114,19 +1127,30 @@ void showTimes(float InitTimeSecs, float FrameTimeSecs, float PaintTimeSecs, int
 #define milli (1000.)
 #define micro (1000000.)
 
+	string timeInfo[4];
 
 	SelectBackColour(clBlack);
 	SelectTextColour(clWhite);
+
+	timeInfo[0] = "Initialise game= " + to_string(InitTimeSecs * micro);
+	timeInfo[0] += " us";
+
+	timeInfo[1] = "Paint Game=      " + to_string(PaintTimeSecs * milli);
+	timeInfo[1] += " ms";
+
+	timeInfo[3] = "Frames/sec=      " + to_string((float) 1.0 / FrameTimeSecs);
+	timeInfo[3] += " at " + to_string(FrameTimeSecs * milli);
+	timeInfo[3] += " ms/frame";
+
 	Gotoxy(column, row);
-	printf("Initialise game= %0.5f", InitTimeSecs * micro);
-	printf(" us");
+	puts(timeInfo[0].c_str());
+
 	Gotoxy(column, row + 1);
-	printf("Paint Game=      %0.5f", PaintTimeSecs * milli);
-	printf(" ms");
+	puts(timeInfo[1].c_str());
+
 	Gotoxy(column, row + 3);
-	printf("Frames/sec=      %0.3f", (float) 1.0 / FrameTimeSecs);
-	printf(" at %0.5f", FrameTimeSecs * milli);
-	printf(" ms/frame");
+	puts(timeInfo[3].c_str());
+
 
 } // end of showTimes
 
