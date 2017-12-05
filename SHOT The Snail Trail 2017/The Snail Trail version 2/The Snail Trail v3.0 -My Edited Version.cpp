@@ -274,12 +274,13 @@ int __cdecl main()
 			
 			// NEW Save performance data outside of game loop
 			saveData(InitTime.getElapsedTime(), FrameTime.getElapsedTime(), PaintTime.getElapsedTime(), key, message, lifeLeft); //NEW
-			system("pause");
+
 			clearMessage(message);						// NEW reset message array here, moved from above (so we can use it above in saveTimes)
 			InitTimesAlreadySaved = TRUE;				// NEW prevent repeated saving of Init timing
 
 
-			key = getKeyPress();						// display menu & read in next option
+			key = getKeyPress();;						// display menu & read in next option
+			system("pause");
 		}
 
 		// ******************************** End of Frame  Loop **************************************
@@ -436,7 +437,7 @@ void paintGame(string msg, char garden[][SIZEX])
   //													display garden on screen
 void paintGarden(const char garden[][SIZEX])
 { //display garden content on screen
-	string gardenOutput;
+	string gardenOutput = "";
 
 	SelectBackColour(clGreen);
 	SelectTextColour(clDarkBlue);
