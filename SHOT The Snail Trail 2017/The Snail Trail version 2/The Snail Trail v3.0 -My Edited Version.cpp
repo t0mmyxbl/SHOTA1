@@ -311,6 +311,9 @@ void initialiseGame(int& Eaten, bool& fullUp, char slimeTrail[][SIZEX], char foo
 	int snail[], int frogs[][2], char garden[][SIZEX])
 { //initialise garden & place snail somewhere
 
+	void showTitle(int, int);
+	void showTimingHeadings(int, int);
+	void showOptions(int, int);
 	void setGarden(char[][SIZEX]);
 	void setSnailInitialCoordinates(int[]);
 	void placeSnail(char[][SIZEX], int[]);
@@ -320,8 +323,12 @@ void initialiseGame(int& Eaten, bool& fullUp, char slimeTrail[][SIZEX], char foo
 	void scatterStuff(char[][SIZEX], char[][SIZEX], int[]);
 	void scatterFrogs(char[][SIZEX], int[], int[][2]);
 
+	showTitle(5, 0);				// display game title
+	showTimingHeadings(LEFTM, 5);	// display Timings Heading
+	showOptions(LEFTM, 14);		// display menu options available
 
 	snailStillAlive = true;					// bring snail to life!
+
 	setSnailInitialCoordinates(snail);		// initialise snail position
 	setGarden(garden);					// reset the garden
 	placeSnail(garden, snail);			// place snail at a random position in garden
@@ -407,11 +414,11 @@ void showFood(char garden[][SIZEX], char foodSources[][SIZEX])
 void paintGame(string msg, char garden[][SIZEX])
 { //display game title, messages, snail & other elements on screen
 
-	void showTitle(int, int);
+
 	void showDateAndTime(int, int);
-	void showTimingHeadings(int, int);
+
 	void paintGarden(const char[][SIZEX]);
-	void showOptions(int, int);
+
 	void showMessage(string, int, int);
 	void showPelletCount(int, int, int);
 	void showSnailhealth(float, int, int);
@@ -419,11 +426,11 @@ void paintGame(string msg, char garden[][SIZEX])
 	// ************** code to be timed ***********************************************
 	PaintTime.startTimer();
 
-	showTitle(5, 0);				// display game title
+
 	showDateAndTime(LEFTM, 1);		// display system clock
-	showTimingHeadings(LEFTM, 5);	// display Timings Heading
+
 	paintGarden(garden);		// display garden contents
-	showOptions(LEFTM, 14);		// display menu options available
+
 	showSnailhealth(lifeLeft, 6, 22);		// show snail's health
 	showMessage(msg, 6, 23);	// display status message, if any
 
