@@ -280,7 +280,7 @@ int __cdecl main()
 
 
 			key = getKeyPress();;						// display menu & read in next option
-			system("pause");
+			//system("pause");
 		}
 
 		// ******************************** End of Frame  Loop **************************************
@@ -768,14 +768,16 @@ void moveFrogs(int snail[], int frogs[][2], string& msg, char garden[][SIZEX], c
 			{
 				if (frogs[0][0] == snail[0] && frogs[0][1] == snail[1])	// landed on snail? - grub up!
 				{
-					msg = "FROG GOT YOU!" + Bleeeep;
+					msg = "FROG GOT YOU! ";
+					msg += Bleeeep;
 					snailStillAlive = false;							// snail is dead!
 					gameEvent = DEADSNAIL;								//NEW record result
 				}
 				else garden[frogs[0][0]][frogs[0][1]] = FROG;			// display frog on garden (thus destroying any pellet that might be there).
 			}
 			else {
-				msg = "EAGLE GOT A FROG" + Bleep;
+				msg = "EAGLE GOT A FROG ";
+				msg += Bleep;
 			}
 		}
 //====================================================
@@ -824,14 +826,16 @@ void moveFrogs(int snail[], int frogs[][2], string& msg, char garden[][SIZEX], c
 			{
 				if (frogs[1][0] == snail[0] && frogs[1][1] == snail[1])	// landed on snail? - grub up!
 				{
-					msg = "FROG GOT YOU!" + Bleeeep;
+					msg = "FROG GOT YOU! ";
+					msg += Bleeeep;
 					snailStillAlive = false;							// snail is dead!
 					gameEvent = DEADSNAIL;								//NEW record result
 				}
 				else garden[frogs[1][0]][frogs[1][1]] = FROG;			// display frog on garden (thus destroying any pellet that might be there).
 			}
 			else {
-				msg = "EAGLE GOT A FROG" + Bleep;
+				msg = "EAGLE GOT A FROG ";
+				msg+= Bleep;
 			}
 		}
 //=================================================
@@ -880,7 +884,8 @@ void moveSnail(char foodSources[][SIZEX], int snail[], int keyMove[], string& ms
 		}
 		else if (garden[targetY][targetX] == WALL)
 		{
-			msg = Bleep + "THAT'S A WALL!";
+			msg = Bleep;
+			msg += " THAT'S A WALL!";
 			lifeLeft += ENERGY_USED;	// didn't move, so return some health!
 			moveResult = WALL;			//NEW record result of move
 		}
@@ -897,7 +902,8 @@ void moveSnail(char foodSources[][SIZEX], int snail[], int keyMove[], string& ms
 			if (lifeLeft > LIFE_SPAN) lifeLeft = LIFE_SPAN;	// can't acquire more than 100% energy
 
 			fullOfLettuce = (lettucesEaten == LETTUCE_QUOTA); // if full, stop the game as snail wins!
-			fullOfLettuce ? msg = "LAST LETTUCE EATEN" + Bleeeep : msg = "LETTUCE EATEN" + Bleep;
+			fullOfLettuce ? msg = "LAST LETTUCE EATEN " : msg = "LETTUCE EATEN ";
+			fullOfLettuce ? msg += Bleeeep : msg += Bleep;
 			// WIN! WIN! WIN!
 			if (fullOfLettuce) gameEvent = WIN;				//NEW record result
 			moveResult = LETTUCE;							//NEW record result of move
@@ -908,7 +914,8 @@ void moveSnail(char foodSources[][SIZEX], int snail[], int keyMove[], string& ms
 			slimeTrail[snail[0]][snail[1]] = SLIMELIFE;		// set slime LIFE_SPAN
 			snail[0] += keyMove[0];							// go in direction indicated by keyMove
 			snail[1] += keyMove[1];
-			msg = "PELLET ALERT!" + Bleep;
+			msg = "PELLET ALERT! ";
+			msg += Bleep;
 
 			lifeLeft *= (LIFE_SPAN - PELLET_POISON);		// lose a bit of health
 			moveResult = PELLET;							//NEW record result of move
@@ -920,7 +927,8 @@ void moveSnail(char foodSources[][SIZEX], int snail[], int keyMove[], string& ms
 			snail[0] += keyMove[0];							// go in direction indicated by keyMove
 			snail[1] += keyMove[1];
 			foodSources[snail[0]][snail[1]] = GRASS;		// eat the worm, only grass left behind
-			msg = "WORM EATEN" + Bleep;
+			msg = "WORM EATEN ";
+			msg += Bleep;
 
 			if (lifeLeft > (LIFE_SPAN - WORM_ENERGY)) lifeLeft = LIFE_SPAN;	// can't have more than 100% life span!
 			else lifeLeft += WORM_ENERGY;
@@ -931,14 +939,16 @@ void moveSnail(char foodSources[][SIZEX], int snail[], int keyMove[], string& ms
 			garden[snail[0]][snail[1]] = SLIME;				// lay a final trail of slime
 			snail[0] += keyMove[0];							// go in direction indicated by keyMove
 			snail[1] += keyMove[1];
-			msg = "OH NO! A FROG!" + Bleeeep;
+			msg = "OH NO! A FROG! ";
+			msg += Bleeeep;
 			snailStillAlive = false;						// game over
 			moveResult = FROG;								//NEW record result of move
 			gameEvent = DEADSNAIL;							//NEW record result of move
 		}
 		else if (garden[targetY][targetX] == SLIME)
 		{
-			msg = Bleep + "THAT'S SLIME!";
+			msg = Bleep;
+			msg += " THAT'S SLIME!";
 			lifeLeft += ENERGY_USED; // didn't move, so return some health!
 			moveResult = SLIME;								//NEW record result of move
 		}
@@ -951,7 +961,8 @@ void moveSnail(char foodSources[][SIZEX], int snail[], int keyMove[], string& ms
 	}
 	else
 	{
-		msg = "EXHAUSTED! TIME TO DIE..." + Bleeeep;
+		msg = "EXHAUSTED! TIME TO DIE... ";
+		msg += Bleeeep;
 		snailStillAlive = false;		// if exhausted, game over 
 		gameEvent = DEADSNAIL;			//NEW record result of move
 		return;
@@ -1003,7 +1014,7 @@ void clearMessage(string& msg)
 void showTitle(int column, int row)
 { //display game title
 
-	Clrscr();
+	//Clrscr();
 	SelectBackColour(clBlack);
 	SelectTextColour(clYellow);
 	Gotoxy(column, row);
@@ -1071,6 +1082,7 @@ void showOptions(int column, int row)
 
 void showMessage(string msg, int column, int row)
 { //display auxiliary messages if any
+	msg += "                                       ";
 	SelectBackColour(clBlack);
 	SelectTextColour(clYellow);
 	Gotoxy(column, row);
@@ -1093,7 +1105,7 @@ void showSnailhealth(float health, int column, int row)
 	if (health > 0.0) {
 		printf("Health: ");
 		printf("%2.2f", health * 100.0);
-		printf("%%");
+		printf("%% ");
 	}
 	else { 
 		printf("Health: none!");
@@ -1134,14 +1146,14 @@ void showTimes(float InitTimeSecs, float FrameTimeSecs, float PaintTimeSecs, int
 	SelectTextColour(clWhite);
 
 	timeInfo[0] = "Initialise game= " + to_string(InitTimeSecs * micro);
-	timeInfo[0] += " us";
+	timeInfo[0] += " us   ";
 
 	timeInfo[1] = "Paint Game=      " + to_string(PaintTimeSecs * milli);
-	timeInfo[1] += " ms";
+	timeInfo[1] += " ms  ";
 
 	timeInfo[3] = "Frames/sec=      " + to_string((float) 1.0 / FrameTimeSecs);
 	timeInfo[3] += " at " + to_string(FrameTimeSecs * milli);
-	timeInfo[3] += " ms/frame";
+	timeInfo[3] += " ms/frame   ";
 
 	Gotoxy(column, row);
 	puts(timeInfo[0].c_str());
