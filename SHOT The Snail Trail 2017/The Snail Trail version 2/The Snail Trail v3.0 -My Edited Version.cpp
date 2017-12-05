@@ -151,7 +151,6 @@ float lifeLeft(LIFE_SPAN);				// Life starts at 100%, need to eat lettuces and w
 int   lettucesEaten(0);					// win when this reaches LETTUCE_QUOTA
 bool  fullOfLettuce(false);				// when full and alive snail has won!
 
-
 CStopWatch	InitTime,
 FrameTime,
 PaintTime;					// create stopwatchs for timing
@@ -297,7 +296,8 @@ int __cdecl main()
 	
 	//NEW Report final frame time (only the paintGame time will be different from last set as frame won't be recalculated).
 	saveData (InitTime.getElapsedTime(), FrameTime.getElapsedTime(), PaintTime.getElapsedTime(), key, message, lifeLeft); //NEW
-
+	
+	//system("pause");
 	return 0;
 } //end main
 
