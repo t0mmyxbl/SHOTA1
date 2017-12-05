@@ -233,3 +233,12 @@ Average Paint time=	0.411 ms
 Average Init time=	745.695 us
 
 *************************************************************************************************************************
+Moved text info that doesnt change to main (so it's outside timer like paintGame)
+Student: Thomas Clark	DATE: 05/12/2017	TIME: 13:15:41
+SUMMARY for 26 games played, with 940 moves entered.
+
+Average frames/sec=	536980.688
+Average Paint time=	0.450 ms
+Average Init time=	7.257 us
+
+*************************************************************************************************************************

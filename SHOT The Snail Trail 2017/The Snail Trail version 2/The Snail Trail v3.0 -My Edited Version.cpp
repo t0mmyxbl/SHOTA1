@@ -182,6 +182,9 @@ int TotalMovesMade(0);		//NEW
 int __cdecl main()
 {
 	//function prototypes
+	void showTitle(int, int);
+	void showTimingHeadings(int, int);
+	void showOptions(int, int);
 
 	void initialiseGame(int&, bool&, char[][SIZEX], char[][SIZEX], int[], int[][2], char[][SIZEX]);
 	void paintGame(string message, char[][SIZEX]);
@@ -229,6 +232,10 @@ int __cdecl main()
 	{
 		Clrscr();
 		InitTimesAlreadySaved = FALSE;		// NEW - only output Init timing once per game
+
+		showTitle(5, 0);				// display game title
+		showTimingHeadings(LEFTM, 5);	// display Timings Heading
+		showOptions(LEFTM, 14);		// display menu options available
 
 		// ************** code to be timed ***********************************************
 		InitTime.startTimer();
@@ -279,7 +286,7 @@ int __cdecl main()
 
 
 			key = getKeyPress();;						// display menu & read in next option
-			//system("pause");
+			system("pause");
 		}
 
 		// ******************************** End of Frame  Loop **************************************
@@ -311,21 +318,14 @@ void initialiseGame(int& Eaten, bool& fullUp, char slimeTrail[][SIZEX], char foo
 	int snail[], int frogs[][2], char garden[][SIZEX])
 { //initialise garden & place snail somewhere
 
-	void showTitle(int, int);
-	void showTimingHeadings(int, int);
-	void showOptions(int, int);
+
 	void setGarden(char[][SIZEX]);
 	void setSnailInitialCoordinates(int[]);
 	void placeSnail(char[][SIZEX], int[]);
 	void initialiseSlimeTrailAndFood(char[][SIZEX], char[][SIZEX]);
-	void initialiseFoodSources();
 	void showFood(char[][SIZEX], char[][SIZEX]);
 	void scatterStuff(char[][SIZEX], char[][SIZEX], int[]);
 	void scatterFrogs(char[][SIZEX], int[], int[][2]);
-
-	showTitle(5, 0);				// display game title
-	showTimingHeadings(LEFTM, 5);	// display Timings Heading
-	showOptions(LEFTM, 14);		// display menu options available
 
 	snailStillAlive = true;					// bring snail to life!
 
