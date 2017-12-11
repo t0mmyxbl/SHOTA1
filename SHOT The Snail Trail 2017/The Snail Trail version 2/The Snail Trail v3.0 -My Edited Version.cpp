@@ -1098,7 +1098,7 @@ void showMessage(string msg, int column, int row)
 
 void showSnailhealth(float health, int column, int row)
 { //display snail life left
-
+	string healthString;
 	SelectBackColour(clBlack);
 	SelectTextColour(clYellow);
 	Gotoxy(column, row);
@@ -1109,13 +1109,12 @@ void showSnailhealth(float health, int column, int row)
 		SelectTextColour(clRed);
 
 	if (health > 0.0) {
-		printf("Health: ");
-		printf("%2.2f", health * 100.0);
-		printf("%% ");
+		healthString = "Health: " + to_string(health * 100.0) + "%";
 	}
 	else { 
-		printf("Health: none!");
+		healthString = "Health: none!";
 	}
+	puts(healthString.c_str());
 } //end of showMessage
 
 void showTimingHeadings(int column, int row)
