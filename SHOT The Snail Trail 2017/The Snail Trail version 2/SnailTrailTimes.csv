@@ -350,3 +350,39 @@ Average Paint time=	0.855 ms
 Average Init time=	6.097 us
 
 *************************************************************************************************************************
+
+Student: Thomas Clark	DATE: 21/12/2017	TIME: 19:50:24
+SUMMARY for 26 games played, with 940 moves entered.
+
+Average frames/sec=	325692.406
+Average Paint time=	0.691 ms
+Average Init time=	11.468 us
+
+*************************************************************************************************************************
+
+Student: Thomas Clark	DATE: 30/12/2017	TIME: 14:11:44
+SUMMARY for 26 games played, with 940 moves entered.
+
+Average frames/sec=	243867.750
+Average Paint time=	0.818 ms
+Average Init time=	12.790 us
+
+*************************************************************************************************************************
+moved a couple global variables to local
+Student: Thomas Clark	DATE: 30/12/2017	TIME: 14:27:34
+SUMMARY for 26 games played, with 940 moves entered.
+
+Average frames/sec=	276857.781
+Average Paint time=	0.795 ms
+Average Init time=	12.928 us
+
+*************************************************************************************************************************
+^#2
+Student: Thomas Clark	DATE: 30/12/2017	TIME: 14:27:46
+SUMMARY for 26 games played, with 940 moves entered.
+
+Average frames/sec=	286246.688
+Average Paint time=	0.865 ms
+Average Init time=	12.277 us
+
+*************************************************************************************************************************

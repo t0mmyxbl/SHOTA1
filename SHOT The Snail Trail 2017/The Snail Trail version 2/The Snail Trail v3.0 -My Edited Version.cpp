@@ -80,13 +80,12 @@ Annoying bleeps from the PC's speaker announce significant events, check the mes
 //---------------------------------
 //include libraries
 //include standard libraries
-//#include <iostream>          //for output and input
+//#include <iostream>          //for output and input, removed as no longer needed and is a bottleneck
 #include <iomanip>           //for formatted output in 'cout'
-//#include <conio.h>           //for getch
+//#include <conio.h>           //for getch, removed as no longer needed
 #include <fstream>           //for files
 #include <string>            //for string
 #include "hr_time.h"         //for timers
-//#include <stdio.h>
 
 using namespace std;
 
@@ -104,31 +103,26 @@ const int SIZEX(30);					// horizontal dimension
 										//constants used for the garden & its inhabitants
 const char SNAIL('&');					// snail (player's icon)
 const float LIFE_SPAN(1.0);				// Snail's LIFE_SPAN starts full!
-const float ENERGY_USED(LIFE_SPAN / 30.0);// each move uses this much energy (30 moves with no food and you're dead!)
+
 const char DEADSNAIL('o');				// just the shell left...
 const char GRASS(' ');					// open space
 const char WALL('+');                   // garden wall
+const char WORM('~');					// worms are high energy food = 50% energy!
+const char PELLET('-');					// should be invisible, but for testing using a visible character.
 
-const char  WORM('~');					// worms are high energy food = 50% energy!
-const float WORM_ENERGY(LIFE_SPAN / 2.0);	// eat worms to keep living in the fast lane!
-const int   WORM_COUNT(8);				// how many worms are available
+//const int WORM_COUNT(8);				// how many worms are available, no longer needed
+//const int  NUM_PELLETS(15);				// number of slug pellets scattered about, no longer needed
 
 const char SLIME('.');					// snail produce
 const int  SLIMELIFE(20);				// how long slime lasts (in keypresses)
 
-const char PELLET('-');					// should be invisible, but for testing using a visible character.
-const int  NUM_PELLETS(15);				// number of slug pellets scattered about
-const float PELLET_POISON(LIFE_SPAN / 10.0); // each pellet saps a bit of health too (10% of what remains)
-
 const char LETTUCE('@');				// a lettuce
 const int  LETTUCE_QUOTA(6);			// how many lettuces you need to eat before you win.
-const float LETTUCE_ENERGY(LIFE_SPAN / LETTUCE_QUOTA);		// energy available from eating a lettuce (less than a worm!)
 
 const int  NUM_FROGS(2);
 const char FROG('M');
 const char DEAD_FROG_BONES('X');		// Dead frogs are marked as such in their 'y' coordinate for convenience
 const int  FROGLEAP(5);					// How many spaces do frogs jump when they move (setting to 1 = short life for snail!)
-const float  EagleStrike(0.33f);		// There's a 1 in 30 chance of an eagle strike on a frog
 
 										// the keyboard arrow codes
 const int UP(72);						// up key
@@ -209,9 +203,10 @@ int __cdecl main()
 
 	//local variables
 	//arrays that store ...
-	char garden[2][SIZEY][SIZEX];			// the game 'world'
+	char garden[2][SIZEY][SIZEX];			// the game 'world' //made of 3 layers for base, food and slime
 	//char slimeTrail[SIZEY][SIZEX];		// lifetime of slime counters overlay
 	//char foodSources[SIZEY][SIZEX];		// remember where the lettuces are planted and worms are
+											//both merged into garden as layers
 
 	string message;							// various messages are produced in game.
 	int  snail[2];							// the snail's current position (x,y)
@@ -293,7 +288,7 @@ int __cdecl main()
 		// ******************************** End of Frame  Loop **************************************
 
 		//							If alive...								If dead...
-		(snailStillAlive) ? message = "WELL DONE, YOU WON!" : message = "REST IN PEAS.";
+		(snailStillAlive) ? message = "WELL DONE, YOU WON!" : message = "REST IN PEACE.";
 
 		if (!snailStillAlive) garden[0][snail[0]][snail[1]] = DEADSNAIL;
 		paintGame(message, garden);					// display final game info, garden & message
@@ -452,15 +447,15 @@ void paintGarden(const char garden[][SIZEY][SIZEX])
 	SelectBackColour(clGreen);
 	SelectTextColour(clDarkBlue);
 	Gotoxy(0, 2);
-	for (int y(0); y < (SIZEY); ++y)
+	for (int y(0); y < (SIZEY); ++y) //the line the grid is on
 	{	
-		for (int x(0); x < (SIZEX); ++x)
+		for (int x(0); x < (SIZEX); ++x) //adds each character in the line
 		{
 			gardenOutput.push_back(garden[0][y][x]);			// display current garden contents
 		}
-		gardenOutput.push_back('\n');
+		gardenOutput.push_back('\n');	//add a line break to the line
 	}
-	puts(gardenOutput.c_str());
+	puts(gardenOutput.c_str()); //output the whole grid as one string
 } //end of paintGarden
 
 
@@ -506,6 +501,7 @@ void scatterStuff(char garden[][SIZEY][SIZEX], int snail[])
 {
 	// ensure stuff doesn't land on the snail, or each other.
 	// prime x,y coords with initial random numbers before checking
+	//unrolled for loops for each
 
 //=================SET PELLET POSITIONS==========================
 	int x(Random(SIZEX - 2)), y(Random(SIZEY - 2));				// seed x and y with random coords
@@ -849,6 +845,7 @@ void moveFrogs(int snail[], int frogs[][2], string& msg, char garden[][SIZEY][SI
 
 bool eatenByEagle(char garden[][SIZEY][SIZEX], int frog[])
 { //There's a 1 in 'EagleStrike' chance of being eaten
+	const float  EagleStrike(0.33f);		// There's a 1 in 30 chance of an eagle strike on a frog
 
 	if (!(Random(int(EagleStrike * 100.0)) == int(EagleStrike * 100.0)))
 	{
@@ -873,6 +870,10 @@ void moveSnail(int snail[], int keyMove[], string& msg, char garden[][SIZEY][SIZ
 	// move snail on the garden when possible.
 	// check intended new position & move if possible...
 	// ...depending on what's on the intended next position in garden.
+	const float ENERGY_USED(LIFE_SPAN / 30.0);// each move uses this much energy (30 moves with no food and you're dead!)
+	const float WORM_ENERGY(LIFE_SPAN / 2.0);	// eat worms to keep living in the fast lane!
+	const float PELLET_POISON(LIFE_SPAN / 10.0); // each pellet saps a bit of health too (10% of what remains)
+	const float LETTUCE_ENERGY(LIFE_SPAN / LETTUCE_QUOTA);		// energy available from eating a lettuce (less than a worm!)
 
 	lifeLeft -= ENERGY_USED;			// just moving costs energy, so deplete it. Assumes the move is made!
 	if (lifeLeft > 0.0)					// check if snail has run out of energy
@@ -1013,11 +1014,11 @@ void clearMessage(string& msg)
 void showTitle(int column, int row)
 { //display game title
 
-	//Clrscr();
+	//Clrscr(); removed to not reset the whole screen each time and only the change the parts that need to change
 	SelectBackColour(clBlack);
 	SelectTextColour(clYellow);
 	Gotoxy(column, row);
-	puts("...THE SNAIL TRAIL...");
+	puts("...THE SNAIL TRAIL..."); //converted from cout
 	SelectBackColour(clWhite);
 	SelectTextColour(clRed);
 
@@ -1030,7 +1031,7 @@ void showDate(int column, int row)
 	SelectBackColour(clWhite);
 	SelectTextColour(clBlack);
 	Gotoxy(column, row);
-	puts(date.c_str());
+	puts(date.c_str()); //converted from cout
 } //end of showDateAndTime
 
 void showTime(int column, int row)
@@ -1040,13 +1041,13 @@ void showTime(int column, int row)
 	SelectBackColour(clWhite);
 	SelectTextColour(clBlack);
 	Gotoxy(column, row);
-	puts(time.c_str());
+	puts(time.c_str()); //converted from cout
 } //end of showDateAndTime
 
 void showOptions(int column, int row)
 { //show game options
 	const int instructionsRows = 6;
-	string instructions[instructionsRows];
+	string instructions[instructionsRows]; //each line of text as a row of string
 	instructions[0] = "Instructions";
 	instructions[2] = "* TO MOVE USE ARROW KEYS - EAT ALL " + to_string(LETTUCE_QUOTA) + " LETTUCES TO WIN.";
 	instructions[3] = "* EAT WORMS (";
@@ -1056,11 +1057,12 @@ void showOptions(int column, int row)
 	instructions[3] += ") TO BOOST HEALTH.";
 	instructions[4] = "* EACH MOVE AND INVISIBLE SLUG PELLETS DEPLETE HEALTH.";
 	instructions[5] = "* TO QUIT ANY TIME USE 'Q'";
-		
+	
+	//output the row of text on each line
 	SelectBackColour(clWhite);
 	SelectTextColour(clBlack);
 	Gotoxy(column, row);
-	puts(instructions[0].c_str());
+	puts(instructions[0].c_str()); 
 	row ++;
 
 	SelectBackColour(clRed);
@@ -1088,7 +1090,7 @@ void showOptions(int column, int row)
 
 void showMessage(string msg, int column, int row)
 { //display auxiliary messages if any
-	msg += "                                       ";
+	msg += "                                       "; //set message to blank each time
 	SelectBackColour(clBlack);
 	SelectTextColour(clYellow);
 	Gotoxy(column, row);
@@ -1114,7 +1116,7 @@ void showSnailhealth(float health, int column, int row)
 	else { 
 		healthString = "Health: none!";
 	}
-	puts(healthString.c_str());
+	puts(healthString.c_str()); //converted from cout
 } //end of showMessage
 
 void showTimingHeadings(int column, int row)
@@ -1131,7 +1133,7 @@ int anotherGo(int column, int row)
 	SelectBackColour(clRed);
 	SelectTextColour(clYellow);
 	Gotoxy(column, row);
-	puts("PRESS 'Q' AGAIN TO QUIT, OR ANY KEY TO CONTINUE");
+	puts("PRESS 'Q' AGAIN TO QUIT, OR ANY KEY TO CONTINUE"); //converted from cout
 	SelectBackColour(clBlack);
 	SelectTextColour(clWhite);
 
@@ -1149,7 +1151,7 @@ void showTimes(float InitTimeSecs, float FrameTimeSecs, float PaintTimeSecs, int
 
 	SelectBackColour(clBlack);
 	SelectTextColour(clWhite);
-
+	//set each line of text as string
 	timeInfo[0] = "Initialise game= " + to_string(InitTimeSecs * micro);
 	timeInfo[0] += " us   ";
 
@@ -1160,6 +1162,7 @@ void showTimes(float InitTimeSecs, float FrameTimeSecs, float PaintTimeSecs, int
 	timeInfo[3] += " at " + to_string(FrameTimeSecs * milli);
 	timeInfo[3] += " ms/frame   ";
 
+	//output each row of text
 	Gotoxy(column, row);
 	puts(timeInfo[0].c_str());
 
